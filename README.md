@@ -8,3 +8,9 @@ GeNeTool is designed to compute Boolean gene expression in time and space as an 
 
 You can direclty download an executable version here http://whis.caltech.edu/GeNeTool/GeNeTool.html
 
+You have two branches
+-Processing 2.1.1 to develop  GeNeTool using http://processing.org
+-Eclipse  to develop  GeNeTool using Eclipse https://www.eclipse.org
+
+ 
+

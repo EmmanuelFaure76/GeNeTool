@@ -1,0 +1,202 @@
+/*
+**    Copyright (C) 2010-2014 Emmanuel FAURE, 
+**                California Institute of Technology
+**                            Pasadena, California, USA.
+**
+**    This library is free software; you can redistribute it and/or
+**    modify it under the terms of the GNU Lesser General Public
+**    License as published by the Free Software Foundation; either
+**    version 2.1 of the License, or (at your option) any later version.
+**
+**    This library is distributed in the hope that it will be useful,
+**    but WITHOUT ANY WARRANTY; without even the implied warranty of
+**    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+**    Lesser General Public License for more details.
+**
+**    You should have received a copy of the GNU Lesser General Public
+**    License along with this library; if not, write to the Free Software
+**    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+*/
+
+import java.awt.*;
+
+Menu mF,mE,mW;
+MenuItem mOF,mSF,mSFA,mFD,mFNS; //FILE
+MenuItem mERT,mERP,mEMC,mEMP,mEDP,mECP; //EXPORT
+MenuItem mWC,mWB; //WINDOWS
+CheckboxMenuItem mWTr,mWCom,mWNa,mWDa,mWEx,mWOp,mWMo,mWDo,mWGe,mWCo,mWSe; //WINDOWS Check windows box
+
+void initMenuBar(){
+  MenuBar mb = new MenuBar();  
+  mb.add(mF = new Menu("File"));
+  mF.add(mOF = new RedirectingMenuItem(this,"Open Model", new MenuShortcut( KeyEvent.VK_O )));  
+  mF.add(mSF = new RedirectingMenuItem(this,"Save Model", new MenuShortcut( KeyEvent.VK_S )));  mSF.setEnabled(false);
+  mF.add(mSFA = new RedirectingMenuItem(this,"Save Model as", null));  mSFA.setEnabled(false);
+  mF.addSeparator();
+  mF.add(mFD = new RedirectingMenuItem(this,"Load Data", null));  mFD.setEnabled(false);
+  mF.add(mFNS = new RedirectingMenuItem(this,"Load NanoString", null));  mFNS.setEnabled(false);
+
+  
+  
+   mb.add(mE = new Menu("Export"));
+   mE.add(mERT = new RedirectingMenuItem(this,"Rules in TXT", null)); mERT.setEnabled(false);
+   mE.add(mERP = new RedirectingMenuItem(this,"Rules in PDF", null)); mERP.setEnabled(false);
+   mE.addSeparator();
+   mE.add(mEMC = new RedirectingMenuItem(this,"Model in CSV", null)); mEMC.setEnabled(false);
+   mE.add(mEMP = new RedirectingMenuItem(this,"Model in PDF", null)); mEMP.setEnabled(false);
+   mE.addSeparator();
+   mE.add(mEDP = new RedirectingMenuItem(this,"DATA in PDF", null)); mEDP.setEnabled(false);
+   mE.add(mECP = new RedirectingMenuItem(this,"Compare in PDF", null)); mECP.setEnabled(false);
+   
+   mb.add(mW = new Menu("Windows"));
+   mW.add(mWSe = new RedirectingCheckboxMenuItem(this,"Search...", false)); mWSe.setEnabled(false);
+   mW.add(mWCo = new RedirectingCheckboxMenuItem(this,"Colors", false));
+   mW.addSeparator();
+   mW.add(mWC = new RedirectingMenuItem(this,"Cascade", null));
+   mW.add(mWB = new RedirectingMenuItem(this,"Best", null));
+   mW.addSeparator();
+   mW.add(mWGe = new RedirectingCheckboxMenuItem(this,"Genes", MenuActive[0]==1)); 
+   mW.add(mWDo = new RedirectingCheckboxMenuItem(this,"Domains", MenuActive[1]==1)); 
+   mW.add(mWMo = new RedirectingCheckboxMenuItem(this,"Model", MenuActive[2]==1)); mWMo.setEnabled(false);
+   mW.add(mWOp = new RedirectingCheckboxMenuItem(this,"Operators", MenuActive[3]==1)); mWOp.setEnabled(false);
+   mW.add(mWEx = new RedirectingCheckboxMenuItem(this,"Expression", MenuActive[4]==1)); mWEx.setEnabled(false);
+   mW.add(mWDa = new RedirectingCheckboxMenuItem(this,"Data", MenuActive[5]==1)); mWDa.setEnabled(false);
+   mW.add(mWNa = new RedirectingCheckboxMenuItem(this,"NanoString", MenuActive[6]==1));mWNa.setEnabled(false);
+   mW.add(mWCom = new RedirectingCheckboxMenuItem(this,"Compare", MenuActive[7]==1)); mWCom.setEnabled(false);
+   mW.add(mWTr = new RedirectingCheckboxMenuItem(this,"Tree", MenuActive[8]==1)); 
+
+        
+  this.frame.setMenuBar(mb);
+}
+
+public void checkEnablelMenu(){
+  if(nbGene>0 || nbDomain>0) {  //START WITH GENES OR DOMAINS TO SAVE SOMETHING
+      mWSe.setEnabled(true);
+      mERT.setEnabled(true);
+      mERP.setEnabled(true);
+      mSF.setEnabled(true);
+      mSFA.setEnabled(true);
+      if(!isActive("operator")) active("operator",0); 
+  }else{ //Nothing has been created (or delete)
+    desActive("operator");desActive("expression");desActive("data");desActive("model"); desActive("nanostring");desActive("compare");
+     mWSe.setEnabled(false);
+     mERT.setEnabled(false);
+     mERP.setEnabled(false);
+     mSF.setEnabled(false);
+     mSFA.setEnabled(false);
+  }
+  if(Regions.size()==0 || MaxTime==0){  desActive("expression");desActive("data"); desActive("nanostring");  }
+  else if(nbGene>0 && Regions.size()>0) {
+      if(!isActive("expression")) inActive("expression");  
+  } 
+  if(nbDomain>0 && nbGene>0 ){
+       if(!isActive("model")) {initializeModel(); inActive("model");}  
+       if(MaxTime>0 && !isActive("data")){ inActive("data"); inActive("compare");  mFNS.setEnabled(true);}
+  }
+  boolean is=isActive("data");
+  mEDP.setEnabled(is);
+  mECP.setEnabled(is);
+  mFD.setEnabled(is);
+  mFNS.setEnabled(is);
+  
+  
+  is=isActive("model");
+  mEMC.setEnabled(is);
+  mEMP.setEnabled(is);
+
+}
+
+boolean action(Event me, Object arg) {
+  ///////////////// FILE ///////////////////////////
+  if (me.target == mOF) {  toDoMenu=1; return true;  }   //OPEN AN XML FILE
+  if (me.target == mSF) {  toDoMenu=2; return true;  }  //SAVE CURRENT MODEL AN XML FILE
+  if (me.target == mSFA){  toDoMenu=3; return true;  } //SAVE AS  CURRENT MODEL AN XML FILE
+  if (me.target == mFD){   toDoMenu=4; return true;  } //LOAD DATA
+  if (me.target == mFNS){  toDoMenu=5; return true;  } //LOAD NANOSTRING
+  
+  ///////////////// EXPORT ///////////////////////////
+  if (me.target == mERT) {  toDoMenu=10; return true;  }
+  if (me.target == mERP) {  toDoMenu=11; return true;  }
+  if (me.target == mEMC) {  toDoMenu=12; return true;  }
+  if (me.target == mEMP) {  toDoMenu=13; return true;  }
+  if (me.target == mEDP) {  toDoMenu=14; return true;  }
+  if (me.target == mECP) {  toDoMenu=15; return true;  }
+  
+   ///////////////// WIDNOWS ///////////////////////////
+   if (me.target == mWSe) {  changeMenuSearch(); return true;  } //Search Menu
+   if (me.target == mWCo) {  changeMenuColor(); return true;  } //COLORS
+    
+  if (me.target == mWC) {  toDoMenu=20; return true;  } //OPEN ALL WINDOWS IN CASCADE
+  if (me.target == mWB) {  bestMenuOrder(); return true;  } //OPEN THE BES T CONFIGURATION IN CASCADE
+
+  if (me.target == mWTr) {enableWindows(8); return true;  } //TREE
+  if (me.target == mWCom) {enableWindows(7); return true;  } //COMPARE
+  if (me.target == mWNa) {enableWindows(6); return true;  } //NANOSTRING
+  if (me.target == mWDa) {enableWindows(5); return true;  } //DATA
+  if (me.target == mWEx) {enableWindows(4); return true;  } //EXRESSION
+  if (me.target == mWOp) {enableWindows(3); return true;  } //OPERATORS
+  if (me.target == mWMo) {enableWindows(2); return true;  } //MODEL
+  if (me.target == mWDo) {enableWindows(1); return true;  } //DOMAINS
+  if (me.target == mWGe) {enableWindows(0); return true;  } //GENES
+  
+   
+  return super.action(me,arg);
+}
+
+
+public void activeItem(String name,int s){activeItem(getNumMenu(name),s);}
+public void activeItem(int numMenu,int s){
+  boolean state=s==1; boolean act=s>=0;
+  switch(numMenu){
+    case 0 : mWGe.setEnabled(act); mWGe.setState(state); break;
+    case 1 : mWDo.setEnabled(act); mWDo.setState(state); break;
+    case 2 : mWMo.setEnabled(act); mWMo.setState(state); break;
+    case 3 : mWOp.setEnabled(act); mWOp.setState(state); break;
+    case 4 : mWEx.setEnabled(act); mWEx.setState(state); break;
+    case 5 : mWDa.setEnabled(act); mWDa.setState(state); break;
+    case 6 : mWNa.setEnabled(act); mWNa.setState(state); break;
+    case 7 : mWCom.setEnabled(act); mWCom.setState(state); break;
+    case 8 : mWTr.setEnabled(act); mWTr.setState(state); break;
+  }
+}
+    
+public void enableWindows(int numMenu){
+  if(MenuActive[numMenu]==1) {
+      active(numMenu,0);
+      InvReOrderMenu(numMenu);
+  }else{
+    active(numMenu,1);
+    ReOrderMenu(numMenu);
+  }
+}
+
+
+public class RedirectingMenuItem extends MenuItem {
+  private Component event_handler;
+  public RedirectingMenuItem(Component event_handler, String label, MenuShortcut hotkey) {
+    super(label,hotkey);    
+    this.event_handler = event_handler;
+  }
+  public boolean postEvent(Event e) {
+    if (event_handler.isValid()) return event_handler.postEvent(e);
+    else return false;
+  }
+}
+
+
+
+public class RedirectingCheckboxMenuItem extends CheckboxMenuItem {
+  private Component event_handler;
+  public RedirectingCheckboxMenuItem(Component event_handler, String label, boolean state) {
+    super(label,state);    
+    this.event_handler = event_handler;
+  }
+  public boolean postEvent(Event e) {
+   // alert("ok"+event_handler.isValid()+":"+e);
+    //if (event_handler.isValid()) 
+    return event_handler.postEvent(e);
+    //else return false;
+  }
+}
+
+

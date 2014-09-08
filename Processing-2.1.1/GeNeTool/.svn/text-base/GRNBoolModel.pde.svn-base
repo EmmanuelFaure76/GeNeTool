@@ -1,0 +1,391 @@
+import processing.pdf.*;
+import processing.video.*;
+import processing.opengl.*;
+import java.nio.*;
+import sojamo.drop.*;
+import javax.swing.JOptionPane;
+
+SDrop drop; //For dropping a Model file inside the window
+
+Model []MyModels=null; //List of all versions
+Model MyModel=null; //Current Model-> version Loaded
+
+PImage Good, Wrong, Unknown,Ubiquitous,Redo,Reset,Lock,Unlock,Duplicate,colorWheel;
+
+PImage logo;
+
+int verbose=2;
+String NameApplication="GRNBoolModel";
+
+int ScreenX;int ScreenY; float Scale=1; int frameR=20;
+String Version="2011-10-04-14-37-02";
+
+String DirData="data/";//dataPath("");
+void setup(){
+   ScreenX=screen.width;ScreenY=screen.height-100;
+  size(ScreenX,ScreenY,OPENGL); 
+   
+  initFonts();
+  initMouse();
+  initOperators();
+  initMenu();
+  
+  frameRate(frameR); 
+  
+  
+  
+   //DO NOT WORK RESIZE WAIT FOR NEXT VERSION OF PROCESSING
+  //frame.setResizable(true);  
+  //textMode(MODEL);
+  //size(ScreenX,ScreenY, OPENGL);
+  
+ 
+
+  drop = new SDrop(this); //Drop XML Element in the frame
+  ellipseMode(CENTER); 
+
+  //Load Image
+  trashEmpty=loadImage(DirData+"trash_empty.png");
+  trashFull=loadImage(DirData+"trash_full.png");
+ 
+ 
+  Good=loadImage(DirData+"Good.png");
+  Wrong=loadImage(DirData+"Wrong.png");
+  Unknown=loadImage(DirData+"unknown.png");
+  Ubiquitous=loadImage(DirData+"Ubiquitous.png");
+  Redo=loadImage(DirData+"Redo.png");  
+  Reset=loadImage(DirData+"Reset.png");
+  Duplicate=loadImage(DirData+"duplicate.png");
+  Lock=loadImage(DirData+"lock.png");
+  Unlock=loadImage(DirData+"unlock.png");
+  colorWheel=loadImage(DirData+"WheelColor.png"); colorWheel.resize(SizeWheelColor,SizeWheelColor);
+ 
+ logo=loadImage(DirData+"LogoGRN.png"); //NOT USE UET
+ ImageIcon titlebaricon = new ImageIcon(loadBytes(DirData+"LogoGRN.png"));
+ frame.setIconImage(titlebaricon.getImage());
+
+ 
+ initAbout();
+ 
+ 
+ String NameModel="";
+ NameModel="Model-Soxb1.xml";
+ NameModel="Model-Transplant-Soxb1-ES.xml";
+ NameModel="Model-Transplant-Soxb1.xml";
+ NameModel="Model.xml";
+ NameModel="Model+Perturbation.xml";
+ NameModel="ModelHours-transplant.xml";
+ NameModel="TempModel.xml";
+   //frame.setIconImage(logo.image);
+  // initRegion();
+  
+ // ReadRules("/Users/emmanuelfaure/Documents/Processing/USA/GRNBoolModelData/"+NameModel);
+// ReadRules("/Users/emmanuelfaure/Desktop/ee.xml");
+ //try{ ReadNanoString(DirModel+"TC-DATA.csv");} catch (Exception e){addMessage("INIT There is no NanoString file");}
+ 
+ // try {ReadRules(DirModel+"Model-Transplant-Soxb1-ES.xml");} catch (Exception e){addMessage("INIT ERROR There is not valid "+DirModel+"Rules.xml files in the application"); exit();}
+
+ 
+ //try {ReadData(DirModel+"ExprByRegions-02-11-10.csv");} catch (Exception e){addMessage("INIT There is no Expression file");}
+ 
+
+ // try{ ReadNanoString(DirModel+"TC-DATA.csv");} catch (Exception e){addMessage("INIT There is no NanoString file");}
+
+
+
+   // for(int i=0;i<fontList.length;i++)   println(" " + i + " -> " +fontList[i]);
+
+ //ExportRulesPDF("/Users/emmanuelfaure/cherche/Project/USA/GRNBoolModel/111121/Rules.pdf");
+ 
+ //exit();
+ 
+ 
+}
+
+int toDo=0,toDoMenu=0;
+
+void draw(){
+  
+  background(colorBackground);
+  scale(Scale);
+  MouseCursor=ARROW;
+  
+    //MESSAGE AT THE BEGIN
+   // if(nbGene==0) bigMessage("Add some genes...",200,100);
+   // if(nbDomain==0) bigMessage("Add domains...",200,height-200);
+
+
+  //Calcul the hidden part (by the others) of each Menu 
+  for(int i=0;i<nbMenu;i++){
+    int NumMenu=OrderMenu[i];
+    HideMouse[i][0]=OrginMenuXY[NumMenu][0]; HideMouse[i][1]=OrginMenuXY[NumMenu][1]; //Origin
+    int [] SizeMXY=sizeMenu(NumMenu);
+    HideMouse[i][2]=SizeMXY[0]; HideMouse[i][3]=SizeMXY[1]; //Size
+  }
+
+  for(int i=nbMenu-1;i>=0;i--){
+       CurrentMenu=i;
+       displayMenu(OrginMenuXY[OrderMenu[i]][0],OrginMenuXY[OrderMenu[i]][1],OrderMenu[i]);
+  }
+
+ 
+  if(toDo==0){
+    if(ObjetDrag!=null && mousePressed)  ObjetDrag.draw(mouseX()-20,mouseY()-10,-1);
+    noTint();
+    if(mouseOn(10,height-50,40,40))image(trashFull,10,height-50,40,40);
+    else image(trashEmpty,10,height-50,40,40);
+    
+    cursor(MouseCursor); //Mouse Cursor
+  }
+  
+  
+ 
+ if(reOrderMenu>=0) ReOrderMenu(reOrderMenu);  
+ 
+  //For showing help when survole of mouse
+  if(TimeExplanation<=0 && !Explanation.equals("")){
+     if(StepExplanation>0){
+        textFont(myFont, 14);
+        int nb=countString(Explanation,"\n"); if(nb==0) nb=1;
+        int XX=50;int YY=50;
+        rectRoundMenu(XX-5,YY-15,textWidth(Explanation)+10,nb*20,colorExplanation,colorExplanation);
+        //noStroke(); fill(colorExplanation);  rect(XX-5,YY-15,textWidth(Explanation)+10,nb*20);
+        //if(Explanation.indexOf("<BR>")<0){ fill(Textcolor); text(Explanation,XX,YY);   }  else{
+        String []TExplanation=split(Explanation,"\n");
+        for(int i=0;i<TExplanation.length;i++){
+          fill(Textcolor,150);
+          if(TExplanation[i].indexOf("<BR>")>=0){
+             TExplanation[i]=replaceString(TExplanation[i],"<BR>","");
+             fill(Textcolor,255);
+          }
+          text(TExplanation[i],XX,YY+20*i); 
+        }//}
+     }
+     else{
+         textFont(myFont, 10);
+         int nb=countString(Explanation,"\n"); if(nb==0) nb=1;
+         rectRoundMenu(mouseX()-5+20,mouseY()-10+20,textWidth(Explanation)+10,nb*16,colorExplanation,colorBoxBackground);
+        // stroke(colorBoxBackground); fill(colorExplanation);  rect(mouseX()-5+20,mouseY()-10+20,textWidth(Explanation)+10,nb*16);
+         fill(Textcolor); text(Explanation,mouseX()+20,mouseY()+20); 
+     }
+     textFont(myFont, 12);
+  }
+  
+  //if(TimeExplanation<=-50) delay(500); //Just to have not CPU consumation during no activitie
+  if(colorMenu) MenuColor(); //Draw the color Menu 
+  if(searchMenu) MenuSearch(); //Draw the Search Menu
+
+
+//THINGS TODO
+ switch(toDo){
+
+   case 2 : //Save a Snapshot
+         String Name=selectOutput();  
+         if(Name!=null && !Name.equals("")) {
+              PImage im=new PImage(width,height);
+              loadPixels();
+              for(int i=0;i<width*height;i++)  im.pixels[i]=pixels[i];
+               im.updatePixels();
+               im.save(Name);
+               addMessage("Save "+Name + ".tif"); 
+         }
+       toDo=0;
+   break;
+   
+   case 4 : // Restart the model until the current step
+         if(MyModel.step<MyModel.ActualStep) MyModel.Step();
+   else toDo=0;
+   
+   break;
+   
+   case 5 : //Save a SnapShot for the model or Data of each Domains
+      if(CaptureNb>=0){
+          loadPixels();
+            PImage im=new PImage(width,height);
+            for(int i=0;i<width*height;i++)  im.pixels[i]=pixels[i];
+            im.updatePixels();
+            PImage imcrop=im.get(0,0,SizeMenuXY[MenuCapture][0]+1,SizeMenuXY[MenuCapture][1]+1);
+            imcrop.updatePixels();
+            PImage img = createImage(SizeMenuXY[MenuCapture][0]+1,SizeMenuXY[MenuCapture][1]+1, ARGB);
+            img.loadPixels();
+            for (int i = 0; i < img.pixels.length; i++)  img.pixels[i] =imcrop.pixels[i]; 
+            img.updatePixels();
+
+            img.save(dataPath("")+"GRN"+CaptureNb+".tif");
+            pdfCapture.image(imcrop,0,0); 
+            PGraphicsPDF pdfg = (PGraphicsPDF) pdfCapture;  // Get the renderer
+            if(CaptureNb<Domains.size()-1)  pdfg.nextPage();  // Tell it to go to the next page
+       }
+       CaptureNb ++;
+       if(CaptureNb<nbDomain) { MyModel.ActiveDomain=MyModel.getDomain(CaptureNb); }//Activate the Next  Domain
+       else { //End Recording
+           pdfCapture.dispose();
+           pdfCapture.endDraw();
+           //Delete Temporatry files
+           for(int i=0;i<CaptureNb;i++)delete(dataPath("")+"GRN"+i+".tif");
+           CaptureNb=0; 
+           restoreMenu(); 
+           toDo=0;
+       }
+       break;
+   }
+   
+   String Name="";
+   switch(toDoMenu){
+     ///////////////////////////////////////  FILE  ///////////////////////////////////////
+     case 1:  //OPEN AN XML FILE
+         Name=selectInput("Choose a xml file"); 
+         if(Name!=null && !Name.equals("")){
+          try { ReadRules(Name); } catch (Exception e){addMessage("There is not valid "+Name+" files in the application"); deleteModel();}
+         }
+         toDoMenu=0;
+     break;
+     case 2: //SAVE CURRENT MODEL AN XML FILE
+         if(!lastModelLoaded.equals(""))  saveXML(lastModelLoaded);
+         else { //SAVE AS
+            Name=selectOutput("Choose a xml file");
+           if(Name!=null && !Name.equals("")) {lastModelLoaded=Name; saveXML(Name); }
+         }
+         toDoMenu=0;
+     break;
+     case 3:  //SAVE CURRENT MODEL AS A NEW XML FILE
+           Name=selectOutput("Choose a xml file");
+           if(Name!=null && !Name.equals("")) {lastModelLoaded=Name; saveXML(Name); }
+           toDoMenu=0;
+     break;
+     case 4 :   //OPEN EXPRESSION DATA 
+     // try {ReadConfig(new XMLElement(this,DirData+"Config.xml")); } catch (Exception e){addMessage("There is no config file, open in standard");}
+         toDoMenu=0;
+     break;
+     case 5 :  //OPEN NANOSTRING
+         Name=selectInput("Choose a cvs file");
+           if(Name!=null && !Name.equals(""))
+         try{ ReadNanoString(Name);} catch (Exception e){addMessage("INIT There is no NanoString file");}
+       toDoMenu=0; 
+     break;
+
+    ///////////////////////////////////////  EXPORT  ///////////////////////////////////////
+    case 10 :    //EXPORT RULES AS A TXT FILE
+         Name=selectOutput("Choose a txt file"); 
+         if(Name!=null && !Name.equals(""))  ExportRulesTXT(Name);
+         toDoMenu=0;
+     break; 
+     case 11 :    //EXPORT RULES AS A PDF FILE
+         Name=selectOutput("Choose a pdf file"); 
+         if(Name!=null && !Name.equals("")) ExportRulesPDF(Name);
+         toDoMenu=0;
+     break;
+     case 12 : //EXPORT MODEL AS A CSV FILE
+           Name=selectOutput("Choose a csv file"); 
+           if(Name!=null && !Name.equals("")) saveCSV(Name);
+           toDoMenu=0;
+     break;
+     case 13: //EXPORT MODEL AS A PDF FILE
+        Name=selectOutput("Choose a pdf file");  
+        if(Name!=null && !Name.equals("")) {
+            if(!getFileExtension(Name).equals("pdf")) Name=Name+".pdf";
+             MenuCapture=getNumMenu("model"); 
+             saveMenu();
+             ResizeMenuXY(MenuCapture,0,20*nbGene+30+SizeDrawDomain);  //Resize Menu X
+             ResizeMenuXY(MenuCapture,1,100+(20*(1+MyModel.ActualStep)+30));  //Resize Menu Y
+             pdfCapture = createGraphics(SizeMenuXY[MenuCapture][0]+1,SizeMenuXY[MenuCapture][1]+1, PDF, Name);
+             pdfCapture.beginDraw();
+             ReOrderMenu(MenuCapture); //Put the Model Menu in front 
+             OrginMenuXY[MenuCapture][0]=1;OrginMenuXY[MenuCapture][1]=1; //Change the Coordinate to the top
+             for(int i=0;i<nbMenu;i++) MenuActive[i]=-1;  MenuActive[MenuCapture]=1 ; //Hide and unhide the menu
+             CaptureNb=-1;
+             toDo=5;
+        }
+        toDoMenu=0;
+    break;
+     case 14: //EXPORT DATA AS A PDF FILE
+        Name=selectOutput("Choose a pdf file");  
+        if(Name!=null && !Name.equals("")) {
+           if(!getFileExtension(Name).equals("pdf")) Name=Name+".pdf";
+           MenuCapture=getNumMenu("data"); 
+           saveMenu();
+           ResizeMenuXY(MenuCapture,0,20*nbGene+30+SizeDrawDomain);  //Resize Menu X
+           ResizeMenuXY(MenuCapture,1,50+SizeDrawDomain+21*MaxTime);  //Resize Menu Y
+           pdfCapture = createGraphics(SizeMenuXY[MenuCapture][0]+1,SizeMenuXY[MenuCapture][1]+1, PDF, Name);
+           pdfCapture.beginDraw();
+           ReOrderMenu(MenuCapture); //Put the Model Menu in front 
+           OrginMenuXY[MenuCapture][0]=1;OrginMenuXY[MenuCapture][1]=1; //Change the Coordinate to the top
+           for(int i=0;i<nbMenu;i++)  MenuActive[i]=-1 ;  MenuActive[MenuCapture]=1 ; //Hide and unhide the menu
+           CaptureNb=-1;
+           toDo=5;
+        }
+         toDoMenu=0;
+        break;
+     case 15 : //EXPORT COMPARE AS A PDF FILE
+          MenuCapture=getNumMenu("compare"); 
+          if(MenuActive[MenuCapture]!=1) alert("Menu Compare should be active");
+          else{
+            Name=selectOutput();  
+            if(Name!=null && !Name.equals("")) {
+               if(!getFileExtension(Name).equals("pdf")) Name=Name+".pdf";
+               pdfCapture = createGraphics(SizeMenuXY[MenuCapture][0]+1,SizeMenuXY[MenuCapture][1]+1, PDF, Name);
+               pdfCapture.beginDraw();
+               toDo=5;
+               MenuCompare(1,1,MenuCapture);
+               toDo=0;
+               PImage im=new PImage(width,height);
+               loadPixels();
+               for(int i=0;i<width*height;i++)  im.pixels[i]=pixels[i];
+               im.updatePixels();
+               PImage imcrop=im.get(0,0,SizeMenuXY[MenuCapture][0]+1,SizeMenuXY[MenuCapture][1]+1);
+               pdfCapture.image(imcrop,0,0); 
+               pdfCapture.dispose();
+               pdfCapture.endDraw(); 
+            }
+          }
+          toDoMenu=0;
+          break;
+      ///////////////////////////////////////  WINDOWS  ///////////////////////////////////////
+      case 20 :  //OPEN ALL WINDOWS IN CASCADE
+        for(int i=0;i<nbMenu;i++) {  OrginMenuXY[i][0]=SizeMenu*i;OrginMenuXY[i][1]=20*i; OrderMenu[i]=nbMenu-i-1; active(i); } 
+        
+       toDoMenu=0;
+      break;
+      
+      
+   }
+ //resizeScreen();
+ TimeExplanation--;
+}
+
+/*
+void resizeScreen(){
+  if(width != frame.getWidth() || frame.getHeight() != height){
+      addMessage(" From to " + width + " X " +  height);
+      addMessage(" From to " + ScreenX + " X " +  ScreenY);
+      addMessage(" Was to " + frame.getWidth()  + " X " +  frame.getHeight());
+      width=frame.getWidth();
+      height=frame.getHeight();
+      ScreenX=width;ScreenY=height;
+      setPreferredSize(new Dimension(width, height));
+      initFonts(); //I need to reninit the fonts otherwise the fucked up
+      addMessage(" Resize to " + width + " X " +  height);
+  }
+}*/
+
+//THINGS TO DO ON EXIT
+void stop()
+{
+  println(" stop");
+  super.stop();
+} 
+
+void exit(){
+   //saveConfig(DirData+"Config.xml"); 
+   if(!lastModelLoaded.equals("") && confirm("Do you want to save you project?")){
+      saveXML(lastModelLoaded);
+   }
+  // println(" exit");
+  super.exit();
+} 
+
+void dispose(){
+  // println("dispose");
+  super.dispose();
+}
+

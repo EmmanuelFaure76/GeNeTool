@@ -1,0 +1,163 @@
+import javax.swing.JFrame;
+import com.apple.eawt.Application;
+import com.apple.eawt.ApplicationAdapter;
+import com.apple.eawt.ApplicationEvent;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
+String osname=System.getProperty("os.name");
+
+void initAbout(){
+  if(osname.indexOf("Mac")>=0){
+      BufferedImage icon=null;
+       try { 
+         println(" Read "+dataPath("")+"aboutGRN.png");
+         icon = ImageIO.read(new File(dataPath("")+"aboutGRN.png"));
+         new JavaMacDock(icon,width/2-250,height/2-250,500,500);
+       } catch (IOException ex) {println(" Error in About" +ex);  }
+      
+  }
+}
+public class AboutBox extends JFrame implements ActionListener {
+    protected JLabel titleLabel, aboutLabel[];
+    protected int labelCount = 8;
+    protected Font titleFont, bodyFont;
+
+    public AboutBox( BufferedImage icon,int X,int Y,int w,int l) {
+        super("");
+        this.setResizable(false);
+        SymWindow aSymWindow = new SymWindow();
+        this.addWindowListener(aSymWindow);	
+        
+        
+        /*
+        // Initialize useful fonts
+        titleFont = new Font("Lucida Grande", Font.BOLD, 18);
+        if (titleFont == null)   titleFont = new Font("SansSerif", Font.BOLD, 14);
+        bodyFont  = new Font("Lucida Grande", Font.PLAIN, 12);
+        if (bodyFont == null)    bodyFont = new Font("SansSerif", Font.PLAIN, 12);
+		
+        aboutLabel = new JLabel[labelCount];
+        aboutLabel[0] = new JLabel("");
+        aboutLabel[1] = new JLabel("GRN Boolean Model");
+        aboutLabel[1].setFont(titleFont);
+        aboutLabel[2] = new JLabel("Version "+Version);
+        aboutLabel[2].setFont(bodyFont);
+        aboutLabel[3] = new JLabel("");
+        aboutLabel[4] = new JLabel("");
+        aboutLabel[5] = new JLabel("Emmanuel Faure, Isabelle Peter, Eric H Davidson");
+        aboutLabel[5].setFont(bodyFont);
+        aboutLabel[6] = new JLabel("faure@caltech.edu");
+        aboutLabel[6].setFont(bodyFont);
+        aboutLabel[7] = new JLabel("");		
+		
+        Panel textPanel2 = new Panel(new GridLayout(labelCount, 1));
+        for (int i = 0; i<labelCount; i++) {
+            aboutLabel[i].setHorizontalAlignment(JLabel.CENTER);
+            textPanel2.add(aboutLabel[i]);
+        }
+     
+        this.getContentPane().add (textPanel2, BorderLayout.CENTER);
+        */
+        this.pack();
+        this.setLocation(X,Y);
+        this.setSize(w, l+20);
+        
+         ImageBackgroundPanel imp = new ImageBackgroundPanel(icon);
+        this.add(imp);
+        
+       
+    }
+
+    class SymWindow extends java.awt.event.WindowAdapter {
+	    public void windowClosing(java.awt.event.WindowEvent event) {
+		    setVisible(false);
+	    }
+    }
+    
+    public void actionPerformed(ActionEvent newEvent) {
+        setVisible(false);
+    }		
+}
+
+
+class ImageBackgroundPanel extends JPanel {
+    BufferedImage image;
+ 
+    ImageBackgroundPanel(BufferedImage image) {
+        this.image = image;
+    }
+ 
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, this);
+    }
+}
+
+
+public class JavaMacDock
+{  
+  public  BufferedImage icon;
+  public int X,Y,w,l;
+  public JavaMacDock( BufferedImage icon,int X,int Y,int w,int l)
+  {
+    this.icon=icon;
+    this.X=X;this.Y=Y;this.w=w;this.l=l;
+    // create an instance of the mac osx Application class
+    Application theApplication = new Application();
+    
+    // create an instance of our DockBarAdapter class (see source code below)
+    DockBarAdapter dockBarAdapter = new DockBarAdapter(this);
+
+    // add our adapter as a listener on the application object
+    theApplication.addApplicationListener(dockBarAdapter);
+  }
+  
+  // our "callback" method. this method is called by the DockBarAdapter
+  // when a "handleOpenFile" event is received.
+  public void handleOpenFileEvent(ApplicationEvent e)
+  {
+     println(" Drop " + e.getFilename());
+  }
+  
+}
+
+
+class DockBarAdapter extends ApplicationAdapter
+{
+  private JavaMacDock handler;
+  private AboutBox aboutBox;
+  // the main class passes a reference to itself to us when we are constructed
+  public DockBarAdapter(JavaMacDock handler)
+  {
+    this.handler = handler;
+  }
+  
+  // this is the method that is called when a drag and drop event is received
+  // by the Application, and passed to us. In turn, we call back to the main
+  // class to let it know this event was received so it can deal with the
+  // event.
+  public void handleOpenFile(ApplicationEvent e)
+  {
+    handler.handleOpenFileEvent(e);
+  }
+  public void handleQuit(ApplicationEvent e)
+  {
+    exit();
+  }
+  
+  public void handleAbout(ApplicationEvent event) {
+        if (aboutBox == null)   aboutBox = new AboutBox(handler.icon,handler.X,handler.Y,handler.w,handler.l);
+        aboutBox.setResizable(false);
+	aboutBox.setVisible(true);
+        event.setHandled(true);
+    }
+}
+
+

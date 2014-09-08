@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model MaxTime="0" date="24:3:2014-22:49:23">
+  <animal id="0" species="Capra hircus">Goat</animal>
+  <animal id="1" species="Panthera pardus">Leopard</animal>
+  <animal id="2" species="Equus zebra">Zebra</animal>
+  <Expression timeUnit="hpf">
+    <Gene name="dsddds"/>
+    <Gene name="koko"/>
+  </Expression>
+  <Rules type="Vector Equations"/>
+  <Config Version="2011-10-04-14-37-02">
+    <Color Name="background" alpha="255.0" blue="255.0" green="255.0" red="255.0"/>
+    <Color Name="tab" alpha="255.0" blue="246.0" green="196.0" red="64.0"/>
+    <Color Name="tab background" alpha="255.0" blue="120.0" green="120.0" red="120.0"/>
+    <Color Name="box background" alpha="255.0" blue="120.0" green="120.0" red="120.0"/>
+    <Color Name="button" alpha="255.0" blue="246.0" green="196.0" red="64.0"/>
+    <Color Name="text" alpha="255.0" blue="0.0" green="0.0" red="0.0"/>
+    <Color Name="manual" alpha="255.0" blue="255.0" green="255.0" red="255.0"/>
+    <Color Name="operators" alpha="255.0" blue="120.0" green="120.0" red="120.0"/>
+    <Color Name="domain" alpha="100.0" blue="150.0" green="150.0" red="150.0"/>
+    <Color Name="box gene" alpha="100.0" blue="150.0" green="150.0" red="150.0"/>
+    <Color Name="box no gene" alpha="255.0" blue="100.0" green="100.0" red="100.0"/>
+    <Color Name="gene on" alpha="255.0" blue="246.0" green="196.0" red="64.0"/>
+    <Color Name="gene off" alpha="255.0" blue="200.0" green="200.0" red="200.0"/>
+    <Color Name="maternal" alpha="255.0" blue="0.0" green="150.0" red="0.0"/>
+    <Color Name="no data" alpha="255.0" blue="255.0" green="255.0" red="255.0"/>
+    <Color Name="text no gene" alpha="255.0" blue="255.0" green="255.0" red="255.0"/>
+    <Color Name="ubiquitous" alpha="255.0" blue="0.0" green="0.0" red="200.0"/>
+    <Menu Active="1" Number="0" OriginX="0" OriginY="0" SizeX="1820" SizeY="380"/>
+    <Menu Active="0" Number="1" OriginX="0" OriginY="385" SizeX="400" SizeY="360"/>
+    <Menu Active="-1" Number="2" OriginX="210" OriginY="0" SizeX="1075" SizeY="150"/>
+    <Menu Active="0" Number="3" OriginX="124" OriginY="435" SizeX="360" SizeY="150"/>
+    <Menu Active="-1" Number="4" OriginX="124" OriginY="385" SizeX="750" SizeY="450"/>
+    <Menu Active="-1" Number="5" OriginX="124" OriginY="70" SizeX="1090" SizeY="100"/>
+    <Menu Active="-1" Number="6" OriginX="124" OriginY="110" SizeX="1170" SizeY="180"/>
+    <Menu Active="-1" Number="7" OriginX="124" OriginY="150" SizeX="110" SizeY="100"/>
+    <Menu Active="0" Number="8" OriginX="124" OriginY="410" SizeX="250" SizeY="450"/>
+    <Font Name="SansSerif" Number="20"/>
+    <Screen ScreenX="1920" ScreenY="1100" frameRate="10"/>
+  </Config>
+</Model>
