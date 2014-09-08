@@ -10,7 +10,8 @@ You can direclty download an executable version here http://whis.caltech.edu/GeN
 
 You have two branches
 -Processing 2.1.1 to develop  GeNeTool using http://processing.org
--Eclipse  to develop  GeNeTool using Eclipse https://www.eclipse.org
+-Eclipse  to develop  GeNeToo in java using Eclipse environment https://www.eclipse.org
+
 
  
 
