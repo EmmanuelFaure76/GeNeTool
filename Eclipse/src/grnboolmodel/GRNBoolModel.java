@@ -17,7 +17,7 @@
 **    License along with this library; if not, write to the Free Software
 **    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 **
-**    GeNeTool Port to Eclipse Framework: William Longabaugh
+**    GeNeTool Port to Eclipse Framework: William J. R. Longabaugh
 **    Copyright (C) 2014 Institute for Systems Biology 
 **                       Seattle, Washington, USA. 
 **
