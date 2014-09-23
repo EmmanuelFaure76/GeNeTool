@@ -43,13 +43,13 @@ import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.pdf.PGraphicsPDF;
 
-import sojamo.drop.DropEvent;
-import sojamo.drop.SDrop;
+//import sojamo.drop.DropEvent;
+//import sojamo.drop.SDrop;
 
 
 public class GRNBoolModel extends PApplet {
 
-  SDrop drop; //For dropping a Model file inside the window
+ // SDrop drop; //For dropping a Model file inside the window
   
   // pulled from ModelDomain.pde
 
@@ -68,7 +68,7 @@ public class GRNBoolModel extends PApplet {
   String pkgName="grnboolmodel.";
   
   int ScreenX;int ScreenY; float Scale=1; int frameR=20;
-  String Version="WJRL Thu Jan 16 18:12:43 PST 2014"; //"2011-10-04-14-37-02";
+  String Version="ISB Thu Sep 11 18:59:50 PDT 2014"; //"2011-10-04-14-37-02";
   
   String DirData="data/";//dataPath("");
   
@@ -123,7 +123,7 @@ public class GRNBoolModel extends PApplet {
     ScreenX=displayWidth;ScreenY=displayHeight-100;
     size(ScreenX,ScreenY); 
      
-    this.frame = (Frame)this.getParent().getParent();
+    //this.frame = (Frame)this.getParent().getParent();
 
     cm.initFonts();
     eh.initMouse();
@@ -140,7 +140,7 @@ public class GRNBoolModel extends PApplet {
     
    
   
-    drop = new SDrop(this); //Drop XML Element in the frame
+ //   drop = new SDrop(this); //Drop XML Element in the frame
     ellipseMode(CENTER); 
   
     //Load Image
@@ -600,7 +600,7 @@ public class GRNBoolModel extends PApplet {
   /////////////////////////////////////////////////////////////////////////////////////////////  
   
   //////////////////////// DROP EVENT //////////////////////////////////////////////////////////////////////// 
-  void dropEvent(DropEvent theDropEvent) {
+/*  void dropEvent(DropEvent theDropEvent) {
     if(theDropEvent.isFile()){
       File NameFile=theDropEvent.file();
       String Name=NameFile.getAbsoluteFile().toString();
@@ -610,7 +610,7 @@ public class GRNBoolModel extends PApplet {
       else mm.addMessage("ERROR Not a valid extenstion for " + Name);
       
     }
-  }
+  }*/
   
   
   //Return true when it's a double click
@@ -660,4 +660,6 @@ public boolean action(Event me, Object arg) {
     // println("dispose");
     super.dispose();
   }
+  
+
 }
