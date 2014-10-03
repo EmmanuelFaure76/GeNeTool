@@ -31,15 +31,12 @@ import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import processing.core.PApplet;
-import processing.core.PFont;
-import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.pdf.PGraphicsPDF;
 
@@ -68,7 +65,7 @@ public class GRNBoolModel extends PApplet {
   String pkgName="grnboolmodel.";
   
   int ScreenX;int ScreenY; float Scale=1; int frameR=20;
-  String Version="ISB Thu Sep 11 18:59:50 PDT 2014"; //"2011-10-04-14-37-02";
+  String Version="ISB Thu Oct 2 16:21:21 PDT 2014"; //"2011-10-04-14-37-02";
   
   String DirData="data/";//dataPath("");
   
@@ -117,13 +114,13 @@ public class GRNBoolModel extends PApplet {
     uf = new UtilityFuncs(this);
     
   }
-   
+
   @Override
   public void setup() {
     ScreenX=displayWidth;ScreenY=displayHeight-100;
     size(ScreenX,ScreenY); 
      
-    //this.frame = (Frame)this.getParent().getParent();
+    this.frame = (Frame)SwingUtilities.getWindowAncestor(this);
 
     cm.initFonts();
     eh.initMouse();
@@ -197,7 +194,6 @@ public class GRNBoolModel extends PApplet {
    //ExportRulesPDF("/Users/emmanuelfaure/cherche/Project/USA/GRNBoolModel/111121/Rules.pdf");
    
    //exit();
-   
    
   }
   
