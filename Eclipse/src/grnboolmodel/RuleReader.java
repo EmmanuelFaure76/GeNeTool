@@ -42,7 +42,9 @@ public class RuleReader {
   //First we Delet all the Old things
    void deleteModel(){
     p.gm.Genes=new ArrayList();
+    p.gm.nbGene = 0;
     p.dm.Domains=new ArrayList();
+    p.dm.nbDomain = 0;
     p.lm.MyModels=null;
     p.lm.MyModel=null;
     p.rm.Regions=new ArrayList();
