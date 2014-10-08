@@ -77,7 +77,11 @@ public class Model {
  
  //When we Create a new Genes we extend it in all the domains
  public void addGene(Gene g){ for(int d=0;d<this.modelDomains.size();d++)this.getDomain(d).addGene(g); }
- public void delGene(Gene g){ for(int d=0;d<this.modelDomains.size();d++)this.getDomain(d).delGene(g); }
+ public void delGene(Gene g){ 
+   for (int d=0;d<this.modelDomains.size();d++) {
+     this.getDomain(d).delGene(g); 
+   }
+ }
 
   
   public void addDomain(Domain domToAdd){ addDomain(new ModelDomain(p, domToAdd));}

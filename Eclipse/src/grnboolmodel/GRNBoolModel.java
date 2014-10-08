@@ -65,7 +65,7 @@ public class GRNBoolModel extends PApplet {
   String pkgName="grnboolmodel.";
   
   int ScreenX;int ScreenY; float Scale=1; int frameR=20;
-  String Version="ISB Tue Oct 7 16:09:10 PDT 2014"; //"2011-10-04-14-37-02";
+  String Version="ISB Tue Oct 7 17:28:39 PDT 2014"; //"2011-10-04-14-37-02";
   
   String DirData="data/";//dataPath("");
   
