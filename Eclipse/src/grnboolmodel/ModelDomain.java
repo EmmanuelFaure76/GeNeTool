@@ -95,9 +95,15 @@ public class ModelDomain {
     int shiftGene=0;
     for(int i=0;i<p.gm.nbGene;i++){
          Gene gg=p.gm.getGene(i);
-         if(gg==g) shiftGene=1;    
-          else
-              for(int j=0;j<p.maxStep;j++){ TGenesStates[i-shiftGene][j]=this.GenesStates[i][j]; TisBlueState[i-shiftGene][j]=this.isBlueState[i][j];   TManual[i-shiftGene][j]=this.Manual[i][j]; }
+         if (gg==g) {
+           shiftGene=1;    
+         } else {
+           for (int j=0;j<p.maxStep;j++) { 
+             TGenesStates[i-shiftGene][j]=this.GenesStates[i][j]; 
+             TisBlueState[i-shiftGene][j]=this.isBlueState[i][j];   
+             TManual[i-shiftGene][j]=this.Manual[i][j]; 
+           }
+         }
      }
      this.GenesStates=TGenesStates;
      this.isBlueState=TisBlueState;

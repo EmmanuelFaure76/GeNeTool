@@ -57,8 +57,14 @@ public class GeneManager {
   public void delGene(Gene g){
     p.mm.addMessage("Delete Gene " + g.Name); 
     if(p.eh.GeneDef==g)p.eh.GeneDef=null;
-    for(int i=0;i<p.dm.nbDomain;i++) p.dm.getDomain(i).delGene(g); //DEL TO DOMAIN
-     if(p.lm.MyModels!=null) for(int i=0;i<p.lm.MyModels.length;i++) p.lm.MyModels[i].delGene(g); //DEL TO MODEL
+    for(int i=0;i<p.dm.nbDomain;i++) {
+      p.dm.getDomain(i).delGene(g); //DEL TO DOMAIN
+    }
+    if(p.lm.MyModels!=null) {
+      for(int i=0;i<p.lm.MyModels.length;i++) {
+        p.lm.MyModels[i].delGene(g); //DEL TO MODEL
+      }
+    }
     ArrayList newListGenes=new ArrayList();
     for(int i=0;i<Genes.size();i++) {
        Gene gene=getGene(i);
