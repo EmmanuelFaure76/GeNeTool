@@ -32,9 +32,9 @@ public class DomainManager {
   
   private GRNBoolModel p;
   
-  ArrayList Domains=new ArrayList();
+  public ArrayList Domains=new ArrayList();
   Domain DomainDef=null; //Domain current show in the definition
-  int nbDomain;
+  public int nbDomain;
   
   String CommentsRule="";
   Domain GenericDomain;

@@ -35,11 +35,11 @@ public class ModelManager {
     this.p = p;   
   } 
 
-  Model []MyModels=null; //List of all versions
-  Model MyModel=null; //Current Model-> version Loaded
+  public Model []MyModels=null; //List of all versions
+  public Model MyModel=null; //Current Model-> version Loaded
   
   
-  String lastModelLoaded=""; //Save the name of the  last Model / Rules Loaded
+  public String lastModelLoaded=""; //Save the name of the  last Model / Rules Loaded
   String [] ModelLoad; //To have the Model in String format for Search Function
 
   //Add a new model in the list

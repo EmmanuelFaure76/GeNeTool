@@ -36,7 +36,7 @@ public class Gene {
   ArrayList [] Objects; //List of logics implemente in Objects
   int nbLogic;
   boolean init=false; //initilise activation
-  int [][]Expression;
+  public int [][]Expression;
   int []Nano=null; // NanoString xpression
   int MinNaNo=100000000; //Minimum Value of NanoString
   int MaxNaNo=-100000000; //Maximum Value of NanoString
@@ -44,7 +44,7 @@ public class Gene {
   GRNBoolModel p;
   //Constructor
   
-  Gene(GRNBoolModel p, String Name){
+  public Gene(GRNBoolModel p, String Name){
     this.p = p;
     this.Name=Name;
     this.init();

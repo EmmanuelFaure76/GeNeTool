@@ -69,7 +69,7 @@ public class GRNBoolModel extends PApplet {
   
   String DirData="data/";//dataPath("");
   
-  ObjectManager om;
+  public ObjectManager om;
   RuleReader rr;
   SaveManager sm;
   DomainMenuManager dmm;
@@ -82,12 +82,12 @@ public class GRNBoolModel extends PApplet {
   DataMenuManager tmm;
   EventHandler eh;
   ColorMenu cm;
-  RegionManager rm;
-  DomainManager dm;
+  public RegionManager rm;
+  public DomainManager dm;
   MenuManager mm;
-  GeneManager gm;
-  ModelManager lm;
-  OperatorManager pm;
+  public GeneManager gm;
+  public ModelManager lm;
+  public OperatorManager pm;
   UtilityFuncs uf;
   
   public GRNBoolModel() {
@@ -657,5 +657,7 @@ public boolean action(Event me, Object arg) {
     super.dispose();
   }
   
-
+  public MenuManager getMenuManager() {
+	  return mm;
+  }
 }

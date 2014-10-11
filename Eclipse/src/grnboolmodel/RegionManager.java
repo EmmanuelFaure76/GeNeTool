@@ -38,10 +38,10 @@ public class RegionManager {
   }  
   boolean DataInModel=false; //Visualize the data in the model
   
-  int MaxTime=0;
+  public int MaxTime=0;
   String timeUnit="hpf"; //String for unit
   int dtRegion=3;
-  ArrayList Regions=new ArrayList();
+  public ArrayList Regions=new ArrayList();
   
   //When we add or remove some hours (nb=1 for add, nb=-1 for delet
   public void changeMaxTime(int nb){

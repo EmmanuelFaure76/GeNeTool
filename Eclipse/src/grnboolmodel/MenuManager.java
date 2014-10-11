@@ -191,7 +191,7 @@ public class MenuManager {
   void desActive(int numMenu){active(numMenu,-1);}
   void inActive(String name){active(getNumMenu(name),0);}
   void inActive(int numMenu){active(numMenu,0);}
-  void active(String name,int state){ active(getNumMenu(name),state); }
+  public void active(String name,int state){ active(getNumMenu(name),state); }
   void active(int numMenu,int state){ MenuActive[numMenu]=state;p.mbm.activeItem(numMenu,state); }
   
   //Reorder all the windows in the "best" configuration

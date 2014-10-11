@@ -39,8 +39,8 @@ public class GeneManager {
   } 
   
 
-  ArrayList Genes=new ArrayList();
-  int nbGene;
+  public ArrayList Genes=new ArrayList();
+  public int nbGene;
   
   int SizeDrawGene=100;
   

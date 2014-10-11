@@ -32,7 +32,7 @@ public class Domain{
   ArrayList Tree; //The consecutif Domaine of Real Data
   GRNBoolModel p;
   
-  Domain(GRNBoolModel p, String Name){
+  public Domain(GRNBoolModel p, String Name){
     this.p = p;
     Tree=new ArrayList();
     this.Name=Name;

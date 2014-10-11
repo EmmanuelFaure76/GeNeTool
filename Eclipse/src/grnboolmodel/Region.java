@@ -28,7 +28,7 @@ public class Region{
   int []hours;
   GRNBoolModel p;
   
-  Region(GRNBoolModel p, String Name,int number,int start,int end){
+  public Region(GRNBoolModel p, String Name,int number,int start,int end){
     this.p = p;
     this.Name=Name;
     this.number=number;
@@ -47,6 +47,10 @@ public class Region{
     p.stroke(c,255);  p.rect(x,y,s,20);
     p.fill(p.cm.Textcolor);   p.text(Name,x+s/2-p.textWidth(Name)/2,y+14);
   }  
+  
+  public int getNumber() {
+	  return number;
+  }
 }
 
 
