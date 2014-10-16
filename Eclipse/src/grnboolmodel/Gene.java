@@ -361,4 +361,20 @@ public class Gene {
     }
     return false;
   }
+  
+  public void setIsGene(boolean value) {
+	  isGene = value;
+  }
+  
+  public void setIsMaternal(boolean value) {
+	  isMaternal = value;
+  }
+  
+  public void setIsUbiquitous(boolean value) {
+	  isUbiquitous = value;
+  }
+  
+  public void setIsUnknown(boolean value) {
+	  isUnknown = value;
+  }
 }
