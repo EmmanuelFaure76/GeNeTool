@@ -570,6 +570,11 @@ public class GRNBoolModel extends PApplet {
   /////////////////////////////////////////////////////////////////////////////////////////////
  
   @Override
+  public void keyPressed(){
+	eh.keyPressed();  
+  }
+  
+  @Override
   public void mouseReleased() {
     eh.mouseReleasedEH();
   }
