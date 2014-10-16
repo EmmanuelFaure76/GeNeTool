@@ -84,8 +84,12 @@ public class Model {
  }
 
   
-  public void addDomain(Domain domToAdd){ addDomain(new ModelDomain(p, domToAdd));}
-  public void addDomain(ModelDomain mdToAdd){  modelDomains.add(mdToAdd);  }
+  public void addDomain(Domain domToAdd){ 
+	  addDomain(new ModelDomain(p, domToAdd));
+  }
+  public void addDomain(ModelDomain mdToAdd){  
+	  modelDomains.add(mdToAdd);  
+  }
  
   void delDomain(Domain domToDel){
      if(this.ActiveDomain!=null && this.ActiveDomain.dom==domToDel) this.ActiveDomain=null;
