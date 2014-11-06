@@ -32,12 +32,12 @@ public class Operator{
   boolean change=false; //In case of click to change it
   int comp=0;
   int step=-1; //For Temporal Operator -> " How many Step after at .."
-  int hmin=-1; // For Minium Hours for CC & NCC
-  int hmax=-1; //For Maximum Hours CC & NCC
+  public int hmin=-1; // For Minium Hours for CC & NCC
+  public int hmax=-1; //For Maximum Hours CC & NCC
   GRNBoolModel p;
   
   Operator(GRNBoolModel p, String Name,int nb){  this.p = p; this.Name=Name; this.comp=nb; }
-  Operator(Operator o){  this.p = o.p; this.Name=o.Name;  this.comp=o.comp;  }
+  public Operator(Operator o){  this.p = o.p; this.Name=o.Name;  this.comp=o.comp;  }
  
   public void invChange(){this.change=!this.change;}
   public String getName(){return this.Name;}

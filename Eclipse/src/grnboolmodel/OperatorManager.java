@@ -42,7 +42,7 @@ public class OperatorManager {
   } 
   
   int SizeDrawOperator=40;
-  Operator [] LogicOperator; //List of All Operator
+  public Operator [] LogicOperator; //List of All Operator
   int NbLogicOperator=12;
   Objet [] Bracket=new Objet[2];
   
