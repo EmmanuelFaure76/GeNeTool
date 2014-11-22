@@ -28,7 +28,7 @@ public class LogicOne implements Logic{
   Operator o=null;
   GRNBoolModel p;
   
-  LogicOne(GRNBoolModel p, Operator o,Logic l1){   this.p=p; this.o=o;    this.l1=l1;  }
+  public LogicOne(GRNBoolModel p, Operator o,Logic l1){   this.p=p; this.o=o;    this.l1=l1;  }
   public String getClassName(){ return this.getClass().getName();}
   public Operator getOperator(){return this.o;}
   public Logic getLogic(int n){ if(n==0) return this;  if(n==1) return this.l1;  return null;}

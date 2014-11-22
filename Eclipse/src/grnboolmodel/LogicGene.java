@@ -29,7 +29,7 @@ public class LogicGene implements Logic{
    String logicName;
    GRNBoolModel p;
    
-  LogicGene(GRNBoolModel p, Gene g,boolean v,String logicName){   super();    this.p=p; this.g=g; this.v=v; this.logicName=logicName; }
+  public LogicGene(GRNBoolModel p, Gene g,boolean v,String logicName){   super();    this.p=p; this.g=g; this.v=v; this.logicName=logicName; }
   public String getClassName(){ return this.getClass().getName();}
   public Operator getOperator(){return null;}
   public Logic getLogic(int n){ if(n==0) return this;  return null;}

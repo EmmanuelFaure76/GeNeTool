@@ -31,7 +31,7 @@ public class Operator{
   String Name; //Name of the Operator
   boolean change=false; //In case of click to change it
   int comp=0;
-  int step=-1; //For Temporal Operator -> " How many Step after at .."
+  public int step=-1; //For Temporal Operator -> " How many Step after at .."
   public int hmin=-1; // For Minium Hours for CC & NCC
   public int hmax=-1; //For Maximum Hours CC & NCC
   GRNBoolModel p;
