@@ -43,15 +43,23 @@ public class GeneManager {
   public int nbGene;
   
   int SizeDrawGene=100;
-  
+
+  // TODO needs review
+  public void addGeneForUnitTest(Gene g) {
+    p.mm.addMessage("Create Gene " + g.Name);
+    Genes.add(g); nbGene=Genes.size();
+    p.eh.GeneDef=g;
+    for(int i=0;i<p.dm.nbDomain;i++) p.dm.getDomain(i).addGene(g);  //ADD TO DOMAIN
+    if(p.lm.MyModels!=null) for(int i=0;i<p.lm.MyModels.length;i++)p.lm.MyModels[i].addGene(g); //ADD TO MODEL
+  }
+
   public void addGene(Gene g){
-    p.mm.addMessage("Create Gene " + g.Name); 
+    p.mm.addMessage("Create Gene " + g.Name);
     Genes.add(g); nbGene=Genes.size();
     if(nbGene==1)  p.mbm.checkEnablelMenu();
     p.eh.GeneDef=g;
-    for(int i=0;i<p.dm.nbDomain;i++) p.dm.getDomain(i).addGene(g);  //ADD TO DOMAIN 
+    for(int i=0;i<p.dm.nbDomain;i++) p.dm.getDomain(i).addGene(g);  //ADD TO DOMAIN
     if(p.lm.MyModels!=null) for(int i=0;i<p.lm.MyModels.length;i++)p.lm.MyModels[i].addGene(g); //ADD TO MODEL
-    
   }
               
   public void delGene(Gene g){

@@ -66,7 +66,7 @@ public class Gene {
   public String toRule(){ return p.uf.replaceString(this.Name," ",""+(char)35);}
   //////////////// Logic
   //Add a new Logic to the Gene
-  void addLogic(String id,String rule,String thens,String elses,boolean blueLogic,boolean dft){
+  public void addLogic(String id,String rule,String thens,String elses,boolean blueLogic,boolean dft){
     int NumLogic=nbLogic;nbLogic++;
     Objects[NumLogic]=p.om.DecodeObjects(this,rule);
     Logic CurrentLogic=p.rr.DecodeRule(this.getObjets(NumLogic));
@@ -87,7 +87,7 @@ public class Gene {
  }
  
   //Set a new logic at a specific position
- void setLogic(int l, Logic logi){ 
+ public void setLogic(int l, Logic logi){
       MetaLogic logic=(MetaLogic)Logics[l];
       logic.logi=logi;
       if(logi==null) logic.valid=false; else logic.valid=true; 
@@ -102,7 +102,7 @@ public class Gene {
 
 
  //Return the logic number l
- Logic getLogic(int l){ return Logics[l];}
+ public Logic getLogic(int l){ return Logics[l];}
  //Return the logic correspond to the name
  Logic getLogic(String name){
    for(int i=0;i<nbLogic;i++)
