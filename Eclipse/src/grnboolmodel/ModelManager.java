@@ -27,6 +27,9 @@ package grnboolmodel;
   //
   /////////////////////////////////////////////////////////////////////////////////////////////
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class ModelManager {
  
   private GRNBoolModel p;
@@ -59,4 +62,15 @@ public class ModelManager {
      MyModel=MyModels[0];
      MyModel.ActiveDomain=MyModel.getDomain(0);
   }
+
+    public ArrayList<Model> getModelArray() {
+        ArrayList<Model> modelArray = new ArrayList<Model>();
+        if (MyModels != null) {
+            for (Model model : MyModels) {
+                modelArray.add(model);
+            }
+        }
+
+        return modelArray;
+    }
 }
