@@ -73,7 +73,6 @@ public class ModelManager {
     MyModels=new Model[1];
     MyModels[0]=MyModel;
   }
-  
 
     public ArrayList<Model> getModelArray() {
         ArrayList<Model> modelArray = new ArrayList<Model>();
