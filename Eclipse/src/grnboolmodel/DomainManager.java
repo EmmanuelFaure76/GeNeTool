@@ -49,10 +49,22 @@ public class DomainManager {
   public void addDomain(Domain dom){
     p.mm.addMessage("Create domain " +dom.Name);
     Domains.add(dom); nbDomain=Domains.size();
-    if(nbDomain==1) p.mbm.checkEnablelMenu();
+    // GITHUB issue #2. checkEnableMenu() MAY create the first model AND add all existing domains
+    // to it at that time. If this happens, do not add again. This is not a clean solution, but I cannot
+    // fully anticipate at this time the effect of moving the model operation out of menu code.
+    boolean modelInit = false;
+    if(nbDomain==1) {
+    	modelInit = p.mbm.checkEnablelMenu();
+    }
    
     DomainDef=dom;
-    if(p.lm.MyModels!=null) for(int i=0;i<p.lm.MyModels.length;i++) p.lm.MyModels[i].addDomain(dom);
+    if (p.lm.MyModels!=null) {
+    	for(int i=0;i<p.lm.MyModels.length;i++) {
+    		if (!modelInit || (i > 0)) { // think second test is belt and suspenders...
+    		   p.lm.MyModels[i].addDomain(dom);
+    		}
+    	}
+    }
   }
   public void delDomain(Domain dom){
     p.mm.addMessage("Delete domain " +dom.Name);

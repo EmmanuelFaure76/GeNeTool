@@ -94,7 +94,8 @@ public class MenuBarManager {
     p.frame.setMenuBar(mb);
   }
   
-  public void checkEnablelMenu(){
+  public boolean checkEnablelMenu(){
+	boolean modelInit = false;
     if(p.gm.nbGene>0 || p.dm.nbDomain>0) {  //START WITH GENES OR DOMAINS TO SAVE SOMETHING
         mWSe.setEnabled(true);
         mERT.setEnabled(true);
@@ -115,7 +116,11 @@ public class MenuBarManager {
         if(!p.mm.isActive("expression")) p.mm.inActive("expression");  
     } 
     if(p.dm.nbDomain>0 && p.gm.nbGene>0 ){
-         if(!p.mm.isActive("model")) {p.mmm.initializeModel(); p.mm.inActive("model");}  
+         if(!p.mm.isActive("model")) {
+        	 p.lm.initializeModel();
+        	 modelInit = true;
+        	 p.mm.inActive("model");
+         }  
          if(p.rm.MaxTime>0 && !p.mm.isActive("data")){ p.mm.inActive("data"); p.mm.inActive("compare");  mFNS.setEnabled(true);}
     }
     boolean is=p.mm.isActive("data");
@@ -128,7 +133,7 @@ public class MenuBarManager {
     is=p.mm.isActive("model");
     mEMC.setEnabled(is);
     mEMP.setEnabled(is);
-  
+    return (modelInit);
   }
   
   public boolean handleAppletAction(Event me, Object arg) {

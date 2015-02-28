@@ -65,7 +65,7 @@ public class GRNBoolModel extends PApplet {
   String pkgName="grnboolmodel.";
   
   int ScreenX;int ScreenY; float Scale=1; int frameR=20;
-  String Version="ISB Tue Oct 7 17:28:39 PDT 2014"; //"2011-10-04-14-37-02";
+  String Version="ISB Wed, Oct 15, 2014 10:36:18 PM"; //"2011-10-04-14-37-02";
   
   String DirData="data/";//dataPath("");
   
@@ -569,6 +569,11 @@ public class GRNBoolModel extends PApplet {
   //
   /////////////////////////////////////////////////////////////////////////////////////////////
  
+  @Override
+  public void keyPressed(){
+	eh.keyPressed();  
+  }
+  
   @Override
   public void mouseReleased() {
     eh.mouseReleasedEH();

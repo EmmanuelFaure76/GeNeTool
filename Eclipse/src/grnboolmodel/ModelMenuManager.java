@@ -35,19 +35,6 @@ public class ModelMenuManager {
   ModelMenuManager(GRNBoolModel p) {
     this.p = p;   
   }  
-
-  //First Creation of model
-  void initializeModel(){
-    p.lm.MyModel=new Model(p, 0,p.uf.now());
-     for(int d=0;d<p.dm.Domains.size();d++)
-         p.lm.MyModel.addDomain(p.dm.getDomain(d));
-         p.lm.MyModel.reset(); 
-         if(p.lm.MyModel.modelDomains.size()>0) p.lm.MyModel.ActiveDomain=p.lm.MyModel.getDomain(0);
-         p.lm.MyModels=new Model[1];
-         p.lm.MyModels[0]=p.lm.MyModel;
-    
-    
-  }
   
   ///////////////////////////////////////////////  MODEL 
   void MenuModel(int ligneX,int ligneY,int NumMenu){

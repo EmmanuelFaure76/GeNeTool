@@ -19,11 +19,11 @@ Here are the targets that count:
 <!DOCTYPE BuildFile>
 
 <project name="GeNeTool" default="jar" basedir=".">
-  <property name="app.releaseDir"               location="/SET_TO_YOUR_RELEASE_DIRECTORY/GeNeToolRelease" />	
+  <property name="app.releaseDir"               location="C:\Users\wlongaba\GeNeToolRelease" />	
   <property name="app.buildDir"                 location="${app.releaseDir}/build" />
   <property name="app.classesDir"               location="${app.releaseDir}/classes" />
   <property name="app.rootPackage"              value="grnboolmodel" />
-  <property name="app.extLibDir"                location="/SET_TO_YOUR_JAR_DIRECTORY/processing-lib" />
+  <property name="app.extLibDir"                location="C:\Users\wlongaba\JarsForEclipse\processing-lib" />
   <property name="app.srcDir"                   location="src" />
   <property name="app.jarFile"                  location="${app.releaseDir}/build/lib/GeNeTool.jar" />
  

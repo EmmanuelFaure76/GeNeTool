@@ -59,4 +59,18 @@ public class ModelManager {
      MyModel=MyModels[0];
      MyModel.ActiveDomain=MyModel.getDomain(0);
   }
+  
+  //First Creation of model
+  void initializeModel(){
+    MyModel=new Model(p, 0,p.uf.now());
+    for(int d=0;d<p.dm.Domains.size();d++) {
+        MyModel.addDomain(p.dm.getDomain(d));
+    }
+    MyModel.reset(); 
+    if(MyModel.modelDomains.size()>0) MyModel.ActiveDomain=MyModel.getDomain(0);
+    MyModels=new Model[1];
+    MyModels[0]=MyModel;
+  }
+  
+  
 }
