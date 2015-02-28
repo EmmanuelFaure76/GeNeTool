@@ -195,7 +195,12 @@ public class Model {
           md.Steps[s]=md.isStep(s);
     }
   }
-  
+
+    public ArrayList<ModelDomain> getModelDomains() {
+        return modelDomains;
+    }
+
+    public int getStepCount() {
+        return ActualStep;
+    }
 }
-
-

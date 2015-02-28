@@ -70,7 +70,7 @@ public class GRNBoolModel extends PApplet {
   String DirData="data/";//dataPath("");
   
   public ObjectManager om;
-  RuleReader rr;
+  public RuleReader rr;
   SaveManager sm;
   DomainMenuManager dmm;
   GeneMenuManager gmm;
@@ -83,8 +83,7 @@ public class GRNBoolModel extends PApplet {
   EventHandler eh;
   ColorMenu cm;
   public RegionManager rm;
-  public DomainManager dm;
-  MenuManager mm;
+  public DomainManager dm;MenuManager mm;
   public GeneManager gm;
   public ModelManager lm;
   public OperatorManager pm;

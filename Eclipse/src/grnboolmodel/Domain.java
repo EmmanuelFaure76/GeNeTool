@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class Domain{
 
   String Name;
-  Objet[][] DefObjets; //List of the objects on the domain definition
+  public Objet[][] DefObjets; //List of the objects on the domain definition
   int [][]GenesData; //The real Data for each Genes
   ArrayList Tree; //The consecutif Domaine of Real Data
   GRNBoolModel p;

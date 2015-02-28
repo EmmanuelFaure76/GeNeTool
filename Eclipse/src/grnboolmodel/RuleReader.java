@@ -241,9 +241,14 @@ public class RuleReader {
        Mlogi.dft=dft;
        Mlogi.logi=DecodeRule(g.getObjets(num));
        Mlogi.Then=thens;Mlogi.Else=elses;
-       if(Mlogi.logi==null) Mlogi.valid=false; else Mlogi.valid=true;
+       if(Mlogi.logi==null)
+    	   Mlogi.valid=false;
+       else
+    	   Mlogi.valid=true;
        p.mm.addMessage("This Logic is already crate " + id  + " at " + num);
-    }  else g.addLogic(id,rule,thens,elses,blueLogic,dft);
+    } 
+    else
+    	g.addLogic(id,rule,thens,elses,blueLogic,dft);
       
    
   

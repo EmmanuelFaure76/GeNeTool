@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class Objet{
   Object obj;
   GRNBoolModel p;
-  Objet(GRNBoolModel p, Object obj){this.p=p; this.obj=obj;}
+  public Objet(GRNBoolModel p, Object obj){this.p=p; this.obj=obj;}
   
   public boolean isDomain(){ return obj.getClass().getName().equals(p.pkgName + "Domain");}
   public Domain getDomain(){ return (Domain)obj;}

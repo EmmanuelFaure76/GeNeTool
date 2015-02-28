@@ -42,7 +42,7 @@ public class OperatorManager {
   } 
   
   int SizeDrawOperator=40;
-  Operator [] LogicOperator; //List of All Operator
+  public Operator [] LogicOperator; //List of All Operator
   int NbLogicOperator=12;
   Objet [] Bracket=new Objet[2];
   
@@ -71,7 +71,7 @@ public class OperatorManager {
   //Logic with double operator // A OR B, A AND C..
   boolean isLogicTwo(Logic l){ return l.getClass().getName().equals(p.pkgName + "LogicTwo");}
   
-  void initOperators(){
+  public void initOperators(){
     LogicOperator=new Operator[NbLogicOperator];
      //Unit Operator
     //LogicOperator[0]=new Operator("LINEAR",1);

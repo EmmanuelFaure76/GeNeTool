@@ -29,7 +29,7 @@ public class LogicTwo implements Logic{
   Logic l2=null;
   GRNBoolModel p;
  
-  LogicTwo(GRNBoolModel p, Logic l1,Operator o,Logic l2){  this.p=p; this.l1=l1;  this.o=o;  this.l2=l2; }
+  public LogicTwo(GRNBoolModel p, Logic l1,Operator o,Logic l2){  this.p=p; this.l1=l1;  this.o=o;  this.l2=l2; }
   public String getClassName(){ return this.getClass().getName();}
   public Operator getOperator(){return this.o;}
   public Logic getLogic(int n){ if(n==0) return this;  if(n==1) return this.l1; if(n==2) return this.l2; return null;}
