@@ -437,7 +437,7 @@ public class RuleReader {
       if(md!=null){
          XML[]children=element.getChildren();
          for(int j=0;j<children.length;j++)
-            if(children[j].getName().equals("Step")) readModelStep(model,children[j],md);
+            if(children[j].getName().equals("Step")) readModelStep(model, children[j], md);
      } else p.mm.addMessage("We don't have this domain " + element.getString("Name"));
      return md;
   }
@@ -455,7 +455,7 @@ public class RuleReader {
         XML[]children=element.getChildren();
         for(int j=0;j<children.length;j++)
           if(children[j].getName().equals("Gene")) 
-                readModelGene(children[j],md,s);
+                readModelGene(children[j], md, s);
     } else p.mm.addMessage("We didn't fint step number " );
      
   }
@@ -481,15 +481,31 @@ public class RuleReader {
   
   //Read each type of Domain
   public void ReadDomains(XML element){
-    XML[]children=element.getChildren();
+      String domains_format_field = "format";
+      int domains_format = element.getInt(domains_format_field, 0);
+
+      XML[]children=element.getChildren();
     for(int j=0;j<children.length;j++){
       if(children[j].getName().equals("Domain")) ReadDomain(children[j]);
     }
   }
-  
-  
+
+    // Read a domain. Delegates to V1 or V2 implementation.
+    public void ReadDomain(XML element) {
+        int version = element.getInt("version", 1);
+        if (version == 1) {
+            ReadDomainV1(element);
+        }
+        else if (version == 2) {
+            ReadDomainV2(element);
+        }
+        else {
+            p.mm.addMessage("Skipping domain - found version \'" + version + "\'");
+        }
+    }
+
   //Read each single Domain
-  public void ReadDomain(XML element){
+  public void ReadDomainV1(XML element){
     String Name="";
     if(element.hasAttribute("name"))  Name=element.getString("name");
     Domain dom=p.dm.getDomain(Name);
@@ -512,12 +528,89 @@ public class RuleReader {
         dom.DefObjets=new Objet[Eq.length][2];
         for(int i=0;i<Eq.length;i++)
             dom.DefObjets[i]=DecodeObjetsDomain(Eq[i]);
-  
      }
      
   }
-  
-  
+
+    //Read each single Domain
+    public void ReadDomainV2(XML element) {
+        String name = element.getString("name");
+
+        // Create the domain object
+        Domain domain = findOrCreateDomain(name);
+
+        // Read ancestors
+        for (XML ancestor : element.getChild("ancestors").getChildren("ancestor")) {
+            String ancestorName = ancestor.getString("name");
+            domain.addTree(ancestorName);
+        }
+
+        // Read spatial relations
+        XML definition = element.getChild("definition");
+        ArrayList<Objet[]> relations = new ArrayList<Objet[]>();
+
+        for (XML spatial : definition.getChildren("spatial")) {
+            String type = spatial.getString("type");
+            int min = spatial.getInt("min");
+            int max = spatial.getInt("max");
+            String targetDomain = spatial.getString("domain");
+            relations.add(createSpatialRelation(type, min, max, targetDomain));
+        }
+
+        Objet[][] result = new Objet[relations.size()][2];
+        for (int i = 0; i < relations.size(); i++) {
+            result[i] = relations.get(i);
+        }
+        domain.DefObjets = result;
+    }
+
+    public Domain findOrCreateDomain(String name) {
+        Domain dom = p.dm.getDomain(name);
+        if (dom == null) {
+            dom = new Domain(p, name);
+            p.dm.addDomain(dom);
+        }
+
+        return dom;
+    }
+
+    public Objet[] createSpatialRelation(String type, int min, int max, String targetName) {
+        // Refer to OperatorManager.java for logic operator indices in p.pm.LogicOperator[]
+        Operator opCC = p.pm.LogicOperator[4];
+        Operator opNCC_N = p.pm.LogicOperator[5];
+        Operator opNCC_D = p.pm.LogicOperator[6];
+
+        Operator op = null;
+        if (type.equals("CC")) {
+            op = opCC;
+        }
+        else if (type.equals("NCC_n")) {
+            op = opNCC_N;
+        }
+        if (type.equals("NCC_d")) {
+            op = opNCC_D;
+        }
+
+        op.hmin = min;
+        op.hmax = max;
+
+        Domain target = null;
+
+        // Handle generic domain "R" special case
+        if (targetName == "R") {
+            target = p.dm.GenericDomain;
+        }
+        else {
+            target = findOrCreateDomain(targetName);
+        }
+
+        Objet[] result = new Objet[2];
+        result[0] = new Objet(p, op);
+        result[1] = new Objet(p, target);
+
+        return result;
+    }
+
   //X CC Y, X NCC 1-X-Y
   public Objet[] DecodeObjetsDomain(String rule){
       
