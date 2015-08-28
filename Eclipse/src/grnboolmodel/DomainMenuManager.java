@@ -95,7 +95,14 @@ public class DomainMenuManager {
   public int MenuDefinitionDomain(int ligneX,int ligneY){
    if(p.mm.mouseUnHide(ligneX+100,ligneY-2,15,5,"Add a new domain"))  {
       String Name=p.eh.ask("Give a name "); 
-      if(Name!=null)  p.dm.addDomain(new Domain(p, Name));
+      if (Name != null) {
+          if (p.dm.isDuplicateDomainName(Name)) {
+              p.eh.alert("Domain "+ Name + " already exists");
+          }
+          else {
+              p.dm.addDomain(new Domain(p, Name));
+          }
+      }
     }
   
     ligneX+=170;

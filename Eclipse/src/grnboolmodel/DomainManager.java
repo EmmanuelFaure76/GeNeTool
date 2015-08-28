@@ -66,6 +66,18 @@ public class DomainManager {
     	}
     }
   }
+
+  public boolean isDuplicateDomainName(String candidateName) {
+    for (int i = 0; i < Domains.size(); i++) {
+      Domain domain = (Domain) Domains.get(i);
+      if (domain.Name.equals(candidateName)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public void delDomain(Domain dom){
     p.mm.addMessage("Delete domain " +dom.Name);
     if(dom==DomainDef) DomainDef=null;
