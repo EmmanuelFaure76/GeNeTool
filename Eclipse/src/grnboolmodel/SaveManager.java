@@ -22,7 +22,9 @@
 package grnboolmodel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import com.sun.java.browser.plugin2.DOM;
 import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.data.XML;
@@ -63,8 +65,12 @@ public class SaveManager {
     
     if(p.dm.Domains.size()>0){
       XML Domainsxml = Modelxml.addChild("Domains"); 
-      for(int d=0;d<p.dm.Domains.size();d++)
-        saveDomain(Domainsxml,(Domain)p.dm.Domains.get(d));
+      for(int d=0;d<p.dm.Domains.size();d++) {
+          Domain domain = p.dm.getDomain(d);
+          //saveDomain(Domainsxml,(Domain)p.dm.Domains.get(d));
+          XML domainElement = createDomainElement(domain);
+          Domainsxml.addChild(domainElement);
+      }
     }
     
     
@@ -205,7 +211,37 @@ public class SaveManager {
         if(!def.equals("")) Domainxml.setString("def",def);
     }
   }
-  
+
+    public XML createDomainElement(Domain domain) {
+        XML element = new XML("Domain");
+        element.setInt("version", 2);
+        element.setString("name", domain.Name);
+
+        XML ancestorList = element.addChild("ancestors");
+        for(int i = 0; i < domain.Tree.size(); i++){
+            Region region = domain.getTree(i);
+            XML ancestor = ancestorList.addChild("ancestor");
+            ancestor.setString("name", region.Name);
+        }
+
+        XML definitionList = element.addChild("definition");
+        if (domain.DefObjets != null) {
+            for(int i = 0;i < domain.DefObjets.length; i++) {
+                Objet[] objet = domain.DefObjets[i];
+                Operator op = objet[0].getOperator();
+                Domain target = objet[1].getDomain();
+
+                XML spatial = definitionList.addChild("spatial");
+                spatial.setString("type", op.Name);
+                spatial.setInt("min", op.hmin);
+                spatial.setInt("max", op.hmax);
+                spatial.setString("domain", target.Name);
+            }
+        }
+
+        return element;
+    }
+
   public void saveEmptyRule(XML ParentXML,Gene gene){
      XML Rulexml =  ParentXML.addChild("Rule");
      Rulexml.setString("gene",gene.Name);
