@@ -61,6 +61,29 @@ public class GeneManager {
     for(int i=0;i<p.dm.nbDomain;i++) p.dm.getDomain(i).addGene(g);  //ADD TO DOMAIN
     if(p.lm.MyModels!=null) for(int i=0;i<p.lm.MyModels.length;i++)p.lm.MyModels[i].addGene(g); //ADD TO MODEL
   }
+
+  /*
+   * Trims leading and trailing whitespace. Whitespace blocks inside the string
+   * are truncated to one character.
+   */
+  public String trimGeneName(String name) {
+    name = name.trim().replaceAll(" +", " ");
+    return name;
+  }
+
+  public boolean isDuplicateGene(String candidateName) {
+    String normalizedName = UtilityFuncs.normKey(candidateName);
+
+    for(int i = 0; i < Genes.size(); i++) {
+      Gene gene = getGene(i);
+      String normalizedGene = UtilityFuncs.normKey(gene.Name);
+      if (normalizedName.equals(normalizedGene)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
               
   public void delGene(Gene g){
     p.mm.addMessage("Delete Gene " + g.Name); 

@@ -87,26 +87,30 @@ public class GeneMenuManager {
     
   }
   
-  
-  
-  
   ///////////////////////////////////////////////   GENE  DEFINITION
   public void MenuDefinitionGene(int ligneX,int ligneY){
      
     if(p.mm.mouseUnHide(ligneX+70,ligneY-2,15,5,"Add a new gene"))  {
-      String Name=p.eh.ask("Give a name to this new gene "); 
-      if(Name!=null){
-        Gene g=p.gm.getGene(Name);
-        if(g==null) {
-          g=new Gene(p, Name); //Create a new Gene
-          p.gm.addGene(g);
-          p.gm.Genes=p.gm.sortGene(p.gm.Genes);
-        } 
-        else p.eh.alert("The gene "+ Name + " already exist");
-      }
+        String name = p.eh.ask("Give a name to this new gene ");
+
+        if (name == null) {
+          return;
+        }
+
+        // Trim and truncate whitespace. This name will be used for the gene
+        // if it is not in use already.
+        name = p.gm.trimGeneName(name);
+
+        if (p.gm.isDuplicateGene(name)) {
+            p.eh.alert("The gene "+ name + " already exist");
+            return;
+        }
+
+        Gene g = new Gene(p, name); //Create a new Gene
+        p.gm.addGene(g);
+        p.gm.Genes = p.gm.sortGene(p.gm.Genes);
     }
-  
-    
+
     ligneX+=250;
     
     //Draw the Definition Box

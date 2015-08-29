@@ -220,8 +220,18 @@ public class UtilityFuncs {
     pendingToDo = todo;
     p.selectInput(ask, p.getFileCallbackFunctionName(todo)); 
   }
-  
-  
+
+  /***************************************************************************
+   *
+   * Normalize the given key.
+   *
+   * From BioTapestry DataUtil.
+   *
+   */
+  public static String normKey(String key) {
+    return (key.toUpperCase().replaceAll(" ", ""));
+  }
+
   /*public String selectOutputPro(String prompt, String filestring) { 
     //return selectFileImplPro(prompt, filestring, FileDialog.SAVE);
     //return selectInputPro(prompt,filestring);
