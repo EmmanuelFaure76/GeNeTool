@@ -72,6 +72,17 @@ public class GeneManager {
   }
 
   /*
+   * Checks if a gene with given name already exists in the model. The given
+   * candidate gene name is checked against all existing gene names such that
+   * all comparisons are done using normalized names.
+   *
+   * Example scenario:
+   *
+   * 1. Gene "A 1" is added to the model.
+   * 2. getDuplicateGeneName is called with "A1" as the parameter.
+   * 3. Since "A 1" (normalized to "A1") already exists, getDuplicateGeneName
+   *    returns "A 1".
+   *
    * Returns: null if no duplicate gene is found.
    *          name of duplicate gene if one exists.
    *
