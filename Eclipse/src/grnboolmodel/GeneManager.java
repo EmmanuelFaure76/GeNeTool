@@ -71,18 +71,23 @@ public class GeneManager {
     return name;
   }
 
-  public boolean isDuplicateGene(String candidateName) {
+  /*
+   * Returns: null if no duplicate gene is found.
+   *          name of duplicate gene if one exists.
+   *
+   */
+  public String getDuplicateGeneName(String candidateName) {
     String normalizedName = UtilityFuncs.normKey(candidateName);
 
     for(int i = 0; i < Genes.size(); i++) {
       Gene gene = getGene(i);
       String normalizedGene = UtilityFuncs.normKey(gene.Name);
       if (normalizedName.equals(normalizedGene)) {
-        return true;
+        return gene.Name;
       }
     }
 
-    return false;
+    return null;
   }
               
   public void delGene(Gene g){

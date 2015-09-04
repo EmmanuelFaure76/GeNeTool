@@ -101,8 +101,10 @@ public class GeneMenuManager {
         // if it is not in use already.
         name = p.gm.trimGeneName(name);
 
-        if (p.gm.isDuplicateGene(name)) {
-            p.eh.alert("The gene "+ name + " already exist");
+        String duplicate = p.gm.getDuplicateGeneName(name);
+
+        if (duplicate != null) {
+            p.eh.alert("The gene "+ name + " already exist as gene \'" + duplicate + "\'");
             return;
         }
 
