@@ -68,7 +68,13 @@ public class GRNBoolModel extends PApplet {
   String Version="ISB Wed, Oct 15, 2014 10:36:18 PM"; //"2011-10-04-14-37-02";
   
   String DirData="data/";//dataPath("");
-  
+
+  // Global return value for JOptionPane confirm dialogs
+  int jopConfirmRetVal;
+
+  // Global return value for JOptionPane ask dialogs
+  String jopAskRetVal;
+
   public ObjectManager om;
   public RuleReader rr;
   SaveManager sm;

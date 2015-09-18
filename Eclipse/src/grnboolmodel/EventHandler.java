@@ -22,9 +22,9 @@ package grnboolmodel;
 
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
-  /////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
   //
   // Event.pde
   //
@@ -374,31 +374,80 @@ public class EventHandler {
   int mouseY(){if(p.Scale==1) return p.mouseY; return p.round(p.mouseY/p.Scale);}
   
    
-  public void bigMessage(String mes){bigMessage(mes,p.width/2,p.height/2);}
+  public void bigMessage(String mes){bigMessage(mes, p.width / 2, p.height / 2);}
   public void bigMessage(String mes,float x,float y){ 
     p.fill(p.cm.Textcolor); p.textFont(p.cm.myFont,36); p.text(mes,x,y+30);
-    p.image(p.logo,x-45,y,40,40);p.textFont(p.cm.myFont,12); 
+    p.image(p.logo,x-45,y,40,40);p.textFont(p.cm.myFont, 12);
   }
   
   ///FUNCTION MESSAGE / ALERT
-  public void alert(String mes){ JOptionPane.showMessageDialog(null,mes);}
+  public void alert(final String mes) {
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        @Override
+        public void run() {
+          JOptionPane.showMessageDialog(null, mes);
+        }
+      });
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   //FUNCTION ASK QUESTION CONFIRM YES OR NO
-  public boolean confirm(String mess){
-    int Ans=JOptionPane.showConfirmDialog(null,mess,"GRN Boolean Model",JOptionPane.YES_NO_OPTION); //0 -> Yes, 1 No
-    return Ans==0;  
+  public Boolean confirm(final String mess){
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        @Override
+        public void run() {
+          p.jopConfirmRetVal = JOptionPane.showConfirmDialog(null, mess, "GRN Boolean Model", JOptionPane.YES_NO_OPTION); //0 -> Yes, 1 No
+        }
+      });
+      return p.jopConfirmRetVal == 0;
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
+
   //FUNCTION ASK STRIN INPUT
-  public String ask(String mess){
-     String Name= JOptionPane.showInputDialog(mess); 
-     if(Name!=null && !Name.equals("")) return Name;
-     return null;
+  public String ask(final String mess){
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        @Override
+        public void run() {
+          p.jopAskRetVal = JOptionPane.showInputDialog(mess);
+        }
+      });
+
+      String name = p.jopAskRetVal;
+      if (name != null && !name.equals("")) return name;
+      return null;
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
-  public String ask(String mess,String defaultMess){
-    String Name= JOptionPane.showInputDialog(mess,defaultMess); 
-     if(Name!=null && !Name.equals("")) return Name;
-     return null;
+
+  public String ask(final String mess, final String defaultMess){
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        @Override
+        public void run() {
+          p.jopAskRetVal = JOptionPane.showInputDialog(mess, defaultMess);
+        }
+      });
+
+      String name = p.jopAskRetVal;
+      if (name != null && !name.equals("")) return name;
+      return null;
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
-  
-    
-    
 }
