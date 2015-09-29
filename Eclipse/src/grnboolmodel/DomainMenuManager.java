@@ -52,8 +52,9 @@ public class DomainMenuManager {
             dom.draw(ligneX+5,coordY,p.cm.colorDomain);
             if(p.eh.mousePressOn(ligneX+5,coordY,p.dm.SizeDrawDomain,20)) {
                if(p.doubleClick()){
-                 String Name=p.eh.ask("Give a new name to "+dom.Name); 
-                 if(Name!=null) dom.Name=Name;
+                 //String Name=p.eh.ask("Give a new name to "+dom.Name);
+                 //if(Name!=null) dom.Name=Name;
+                 renameDomain(dom);
               }
               else{//Draw the domain
                   p.ObjetDrag=new Objet(p, dom); 
@@ -89,7 +90,33 @@ public class DomainMenuManager {
     
   }
   
-  
+  private void renameDomain(Domain domain) {
+    String newName = p.eh.ask("Give a new name to " + domain.Name);
+
+    if (newName == null) {
+      return;
+    }
+
+    if (newName.equals(domain.Name)) {
+      p.mm.addMessage("Same name given for renaming domain \'" + domain.Name + "\'");
+      return;
+    }
+
+    // Trim and truncate whitespace. This name will be used for the domain
+    // if it is not in use already.
+    newName = p.dm.trimDomainName(newName);
+
+    String duplicate = p.dm.getDuplicateDomainName(newName);
+
+    if (duplicate != null) {
+      p.eh.alert("\'" + newName + "\' is already in use by domain \'" + duplicate + "\'");
+      return;
+    }
+
+    p.mm.addMessage("Renaming domain \'" + domain.Name + "\' to \'" + newName + "\'");
+    domain.Name = newName;
+  }
+
   public void addDomainFromMenu() {
     String name=p.eh.ask("Give a name ");
 
