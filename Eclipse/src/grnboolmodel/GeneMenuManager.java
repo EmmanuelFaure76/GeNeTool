@@ -54,8 +54,7 @@ public class GeneMenuManager {
         g.draw(ligneX+5,coordY,false,p.gm.SizeDrawGene,true,true); 
         if(p.eh.mousePressOn(ligneX+5,coordY,p.gm.SizeDrawGene,20)) {
           if(p.doubleClick()){
-             String Name=p.eh.ask("Give a new name",g.Name); 
-             if(Name!=null) g.Name=Name;
+            this.renameGeneAction(g);
           }
           else{ //Drag the gene
             p.ObjetDrag=new Objet(p, g); 
@@ -82,11 +81,35 @@ public class GeneMenuManager {
     }
   
     if(p.mm.MenuActive[NumMenu]==1)   MenuDefinitionGene(ligneX,ligneY-25);
-  
-  
-    
   }
-  
+
+  private void renameGeneAction(Gene gene) {
+    String newName = p.eh.ask("Give a new name", gene.Name);
+
+    if (newName == null) {
+      return;
+    }
+
+    if (newName.equals(gene.Name)) {
+      p.mm.addMessage("Same name given for renaming gene \'" + gene.Name + "\'");
+      return;
+    }
+
+    // Trim and truncate whitespace. This name will be used for the gene
+    // if it is not in use already.
+    newName = p.gm.trimGeneName(newName);
+
+    String duplicate = p.gm.getDuplicateGeneName(newName);
+
+    if (duplicate != null) {
+      p.eh.alert("\'" + newName + "\' is already in use by gene \'" + duplicate + "\'");
+      return;
+    }
+
+    p.mm.addMessage("Renaming gene \'" + gene.Name + "\' to \'" + newName + "\'");
+    gene.Name = newName;
+  }
+
   ///////////////////////////////////////////////   GENE  DEFINITION
   public void MenuDefinitionGene(int ligneX,int ligneY){
      
@@ -104,7 +127,7 @@ public class GeneMenuManager {
         String duplicate = p.gm.getDuplicateGeneName(name);
 
         if (duplicate != null) {
-            p.eh.alert("The gene "+ name + " already exist as gene \'" + duplicate + "\'");
+            p.eh.alert("The gene \'" + name + "\' already exist as gene \'" + duplicate + "\'");
             return;
         }
 
