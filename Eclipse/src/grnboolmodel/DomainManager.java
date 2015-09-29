@@ -67,6 +67,45 @@ public class DomainManager {
     }
   }
 
+  /*
+   * Trims leading and trailing whitespace. Whitespace blocks inside the string
+   * are truncated to one character.
+   */
+  public String trimDomainName(String name) {
+    return p.gm.trimGeneName(name);
+  }
+
+  /*
+   * Checks if a domain with given name already exists in the model. The given
+   * candidate domain name is checked against all existing gene names such that
+   * all comparisons are done using normalized names.
+   *
+   * Example scenario:
+   *
+   * 1. Domain "A 1" is added to the model.
+   * 2. getDuplicateDomainName is called with "A1" as the parameter.
+   * 3. Since "A 1" (normalized to "A1") already exists, getDuplicateDomainName
+   *    returns "A 1".
+   *
+   * Returns: null if no duplicate domain is found.
+   *          name of duplicate domain if one exists.
+   *
+   */
+  public String getDuplicateDomainName(String candidateName) {
+    String normalizedName = UtilityFuncs.normKey(candidateName);
+
+    for(int i = 0; i < Domains.size(); i++) {
+      Domain domain = getDomain(i);
+      String normalizedDomain = UtilityFuncs.normKey(domain.Name);
+      if (normalizedName.equals(normalizedDomain)) {
+        return domain.Name;
+      }
+    }
+
+    return null;
+  }
+
+  /*
   public boolean isDuplicateDomainName(String candidateName) {
     for (int i = 0; i < Domains.size(); i++) {
       Domain domain = (Domain) Domains.get(i);
@@ -77,6 +116,7 @@ public class DomainManager {
 
     return false;
   }
+  */
 
   public void delDomain(Domain dom){
     p.mm.addMessage("Delete domain " +dom.Name);

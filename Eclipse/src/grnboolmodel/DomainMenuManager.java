@@ -90,19 +90,33 @@ public class DomainMenuManager {
   }
   
   
-  
+  public void addDomainFromMenu() {
+    String name=p.eh.ask("Give a name ");
+
+    if (name == null) {
+      return;
+    }
+
+    // Trim and truncate whitespace. This name will be used for the domain
+    // if it is not in use already.
+    name = p.dm.trimDomainName(name);
+
+    String duplicate = p.dm.getDuplicateDomainName(name);
+
+    if (duplicate != null) {
+      p.eh.alert("The domain \'"+ name + "\' already exist as domain \'" + duplicate + "\'");
+      return;
+    }
+
+    Domain domain = new Domain(p, name);
+    p.dm.addDomain(domain);
+  }
+
+
   ///////////////////////////////////////////////   DOMAIN DEFINITION
   public int MenuDefinitionDomain(int ligneX,int ligneY){
    if(p.mm.mouseUnHide(ligneX+100,ligneY-2,15,5,"Add a new domain"))  {
-      String Name=p.eh.ask("Give a name "); 
-      if (Name != null) {
-          if (p.dm.isDuplicateDomainName(Name)) {
-              p.eh.alert("Domain "+ Name + " already exists");
-          }
-          else {
-              p.dm.addDomain(new Domain(p, Name));
-          }
-      }
+     addDomainFromMenu();
     }
   
     ligneX+=170;
