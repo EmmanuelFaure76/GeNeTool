@@ -186,14 +186,14 @@ public class RuleReader {
       name = element.getString("name");
     }
     else {
-      String message = "Gene element with empty \'name\' tag";
+      String message = "Gene-element with missing \'name\' tag";
       throw new ModelLoadingException(message);
     }
 
     String duplicate = p.gm.getDuplicateGeneName(name);
 
     if (duplicate != null) {
-      String message = "The gene " + name + " already exist as gene \'" + duplicate + "\'";
+      String message = "The gene \'" + name + "\' already exist as gene \'" + duplicate + "\'";
       throw new ModelLoadingException(message);
     }
 
