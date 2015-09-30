@@ -22,6 +22,7 @@
 package grnboolmodel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   //
@@ -153,5 +154,20 @@ public class GeneManager {
         }
      }
     return NewListGenes;
+  }
+
+  ArrayList<Gene> getReferencingGenes(Gene targetGene) {
+    ArrayList<Gene> result = new ArrayList<Gene>();
+
+    for (Iterator<Object> geneIter = Genes.iterator(); geneIter.hasNext();) {
+      Gene gene = (Gene)geneIter.next();
+      ArrayList<Gene> logicGenes = gene.getAllGenesInVectorEquations();
+
+      if (logicGenes.contains(targetGene)) {
+        result.add(gene);
+      }
+    }
+
+    return result;
   }
 }

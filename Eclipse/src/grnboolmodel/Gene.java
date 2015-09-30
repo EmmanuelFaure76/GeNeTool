@@ -21,6 +21,7 @@
 package grnboolmodel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import processing.core.PApplet;
 
@@ -265,7 +266,7 @@ public class Gene {
      if(this.isMaternal)  { r+=p.red(p.cm.colorMaternal);g+=p.green(p.cm.colorMaternal);b+=p.blue(p.cm.colorMaternal); nbColor++; }
      if(this.isUbiquitous)  {r+=p.red(p.cm.colorUbiquitous);g+=p.green(p.cm.colorUbiquitous);b+=p.blue(p.cm.colorUbiquitous); nbColor++;}
      if(nbColor==0) return p.cm.colorBoxGene; //Dont recolor all the background
-     return p.color(r/nbColor,b/nbColor,g/nbColor);
+     return p.color(r / nbColor, b / nbColor, g / nbColor);
   }
  
   //Draw  the name of the gene and their background in different colors
@@ -294,7 +295,7 @@ public class Gene {
     String N=Name; if(!NameLo.equals(""))N+=":"+NameLo;
     if(siz==-1) siz=p.round(p.textWidth(N)+4);
     if(p.eh.mouseOn(x,y,siz,20)) p.fill(c,255);   else p.fill(c);  p.noStroke(); p.rect(x,y,siz,20);
-    p.fill(p.cm.Textcolor); p.text(N,x-p.textWidth(N)/2+siz/2,y+14); 
+    p.fill(p.cm.Textcolor); p.text(N, x - p.textWidth(N) / 2 + siz / 2, y + 14);
   }
   
   
@@ -376,5 +377,20 @@ public class Gene {
   
   public void setIsUnknown(boolean value) {
 	  isUnknown = value;
+  }
+
+  public ArrayList<Gene> getAllGenesInVectorEquations() {
+    ArrayList<Gene> geneList = new ArrayList<Gene>();
+
+    for (int i = 0; i < nbLogic; i++) {
+      Logic logic = getLogic(i);
+      ArrayList logicGenes = logic.getAllGenes();
+      for (Iterator<Object> geneIter = logicGenes.iterator(); geneIter.hasNext();) {
+        Gene gene = (Gene)geneIter.next();
+        geneList.add(gene);
+      }
+    }
+
+    return geneList;
   }
 }
