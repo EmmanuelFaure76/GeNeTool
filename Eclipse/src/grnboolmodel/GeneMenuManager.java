@@ -83,6 +83,10 @@ public class GeneMenuManager {
     if(p.mm.MenuActive[NumMenu]==1)   MenuDefinitionGene(ligneX,ligneY-25);
   }
 
+  /*
+   * Displays a dialog for renaming a gene. Normalizes the new name
+   * and checks that the name is not already in use.
+   */
   private void renameGeneAction(Gene gene) {
     String newName = p.eh.ask("Give a new name", gene.Name);
 

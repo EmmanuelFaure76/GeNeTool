@@ -89,7 +89,11 @@ public class DomainMenuManager {
     }
     
   }
-  
+
+  /*
+   * Displays a dialog for renaming a domain. Normalizes the new name
+   * and checks that the name is not already in use.
+   */
   private void renameDomain(Domain domain) {
     String newName = p.eh.ask("Give a new name to " + domain.Name);
 
@@ -117,6 +121,10 @@ public class DomainMenuManager {
     domain.Name = newName;
   }
 
+  /*
+   * Displays a dialog asking for a new domain name. If a domain does not already exist with
+   * the given name, a new domain is added to the model.
+   */
   public void addDomainFromMenu() {
     String name=p.eh.ask("Give a name ");
 

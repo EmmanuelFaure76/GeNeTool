@@ -379,6 +379,9 @@ public class Gene {
 	  isUnknown = value;
   }
 
+  /*
+   * Returns all gene objects referenced in the vector equations of this gene.
+   */
   public ArrayList<Gene> getAllGenesInVectorEquations() {
     ArrayList<Gene> geneList = new ArrayList<Gene>();
 

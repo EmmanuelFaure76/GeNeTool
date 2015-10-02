@@ -156,6 +156,9 @@ public class GeneManager {
     return NewListGenes;
   }
 
+  /*
+   * Returns all gene objects that reference this gene in vector equations.
+   */
   ArrayList<Gene> getReferencingGenes(Gene targetGene) {
     ArrayList<Gene> result = new ArrayList<Gene>();
 
