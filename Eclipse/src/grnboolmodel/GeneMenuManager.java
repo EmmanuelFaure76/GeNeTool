@@ -145,7 +145,7 @@ public class GeneMenuManager {
     //Draw the Definition Box
     p.mm.LigneGeneDefBoxX=ligneX;  p.mm.LigneGeneDefBoxY=ligneY;
    // fill(Textcolor);  text("Definition",ligneX-textWidth("Definition")-10,ligneY+14);
-    p.fill(p.cm.colorBoxBackground,50);    p.stroke(p.cm.colorBoxBackground);  p.rect(ligneX,ligneY,p.gm.SizeDrawGene,20);
+    p.fill(p.cm.colorBoxBackground,50);    p.stroke(p.cm.colorBoxBackground);  p.rect(ligneX, ligneY, p.gm.SizeDrawGene, 20);
     
   
     //Gene Definition if active
@@ -199,7 +199,27 @@ public class GeneMenuManager {
     }
   
   }
-  
+
+  /*
+   * Displays an error dialog which indicates that the gene cannot be deleted because
+   * it is referenced in the vector equations of other genes. These genes are included
+   * in a list in the dialog.
+   *
+   */
+  void displayGeneReferencedErrorDialog(Gene targetGene) {
+    ArrayList<Gene> referencingGenes = p.gm.getReferencingGenes(targetGene);
+
+    String message =
+      "Gene \'" + targetGene.Name + "\' cannot be deleted because it is referenced \n" +
+      "in the vector equations of the following genes:\n\n";
+
+    for (Gene refGene : referencingGenes) {
+     message += "\'" + refGene.Name + "\'\n";
+    }
+
+    p.eh.alert(message);
+  }
+
   //Draw the menu of a Definition Genes
   void ObjetsDefinition(int ligneX,int ligneY,MetaLogic logi,ArrayList Objets,int numLogic){
   

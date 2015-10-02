@@ -173,4 +173,11 @@ public class GeneManager {
 
     return result;
   }
+
+  /*
+   * Answers if a gene is referenced in the vector equations of other genes
+   */
+  public boolean isGeneReferencedInVectorEquations(Gene targetGene) {
+    return getReferencingGenes(targetGene).size() > 0;
+  }
 }

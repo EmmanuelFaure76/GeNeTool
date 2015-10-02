@@ -207,7 +207,15 @@ public class EventHandler {
         case 0:  //From a General List -> Complety Delete
           if(p.ObjetDrag.isGene()){ //A Gene
             Gene GeneDrag=p.ObjetDrag.getGene();
-            if(confirm("Are you sure you want to delete  " + GeneDrag.Name+ " ?")) p.gm.delGene(GeneDrag);
+            if (confirm("Are you sure you want to delete  " + GeneDrag.Name+ " ?")) {
+              if (p.gm.isGeneReferencedInVectorEquations(GeneDrag)) {
+                p.gmm.displayGeneReferencedErrorDialog(GeneDrag);
+              }
+              else {
+                p.gm.delGene(GeneDrag);
+              }
+            }
+
             p.ObjetDrag=null;
           } 
           else if(p.ObjetDrag.isDomain()){ // Domain
