@@ -22,9 +22,7 @@
 package grnboolmodel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import com.sun.java.browser.plugin2.DOM;
 import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.data.XML;
