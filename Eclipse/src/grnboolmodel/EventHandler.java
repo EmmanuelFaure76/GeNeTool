@@ -458,4 +458,12 @@ public class EventHandler {
       return null;
     }
   }
+
+  public void handleModelNotValidForExport(GRNBoolModel.MODEL_EXPORT_ERROR errorCode) {
+    switch (errorCode) {
+      case INCOMPLETE_DOMAINS:
+        p.dmm.displayIncompleteDomainDefsErrorDialog();
+        break;
+    }
+  }
 }

@@ -27,6 +27,8 @@ package grnboolmodel;
   //
   /////////////////////////////////////////////////////////////////////////////////////////////
 
+import java.util.List;
+
 public class DomainMenuManager {
 
   private GRNBoolModel p;
@@ -34,7 +36,9 @@ public class DomainMenuManager {
   DomainMenuManager(GRNBoolModel p) {
     this.p = p;   
   }
-  
+
+  final static int NUM_INCOMPLETE_DOMAINS_IN_DIALOG = 5;
+
   ///////////////////////////////////////////////  LIST  DOMAINS 
   void MenuDomains(int ligneX,int ligneY,int NumMenu){
     
@@ -242,11 +246,33 @@ public class DomainMenuManager {
       p.mm.ResizeMenuXY(1,0,400);
       if(p.dm.DomainDef.DefObjets!=null) p.mm.ResizeMenuXY(1,1,200+p.dm.DomainDef.DefObjets.length*30);
      }
-   
-   
-   
-   
+
    return ligneY+20;
-  
+  }
+
+  /*
+   * Displays an error dialog which indicates that domains have incomplete definitions.
+   * The incomplete domains are included as a list in the dialog. The list has at most
+   * NUM_INCOMPLETE_DOMAINS_IN_DIALOG entries.
+   *
+   */
+  void displayIncompleteDomainDefsErrorDialog() {
+    List<Domain> incompleteDomains = p.dm.getIncompleteDomains();
+
+    String message =
+        "The model cannot be saved, because the following domains contain incomplete\n" +
+        "domain definitions:\n\n";
+
+    int limit = incompleteDomains.size();
+    if (limit > NUM_INCOMPLETE_DOMAINS_IN_DIALOG) {
+      limit = NUM_INCOMPLETE_DOMAINS_IN_DIALOG;
+    }
+
+    for (int i = 0; i < limit; i++) {
+      Domain domain = incompleteDomains.get(i);
+      message += "\'" + domain.Name + "\'\n";
+    }
+
+    p.eh.alert(message);
   }
 }

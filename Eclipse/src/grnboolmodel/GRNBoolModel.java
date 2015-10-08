@@ -94,7 +94,12 @@ public class GRNBoolModel extends PApplet {
   public ModelManager lm;
   public OperatorManager pm;
   UtilityFuncs uf;
-  
+
+  public enum MODEL_EXPORT_ERROR {
+    NO_ERROR,
+    INCOMPLETE_DOMAINS
+  };
+
   public GRNBoolModel() {
     om = new ObjectManager(this);
     rr = new RuleReader(this);
@@ -341,7 +346,14 @@ public class GRNBoolModel extends PApplet {
        case 8 : { //SAVE CURRENT MODEL AN XML FILE
          String myName = (uf.Gselection!=null) ? uf.Gselection.getAbsolutePath() : null;
          if (myName!=null && !myName.equals("")) {  
-           lm.lastModelLoaded=myName; sm.saveXML(myName);
+           lm.lastModelLoaded=myName;
+           MODEL_EXPORT_ERROR result = isModelValidForExport();
+           if (result != MODEL_EXPORT_ERROR.NO_ERROR) {
+             eh.handleModelNotValidForExport(result);
+           }
+           else {
+             sm.saveXML(myName);
+           }
          }
          toDo=0;
          break;
@@ -455,7 +467,13 @@ public class GRNBoolModel extends PApplet {
        break;
        case 2: //SAVE CURRENT MODEL AN XML FILE
            if(!lm.lastModelLoaded.equals("")) {
-             sm.saveXML(lm.lastModelLoaded);
+             MODEL_EXPORT_ERROR result = isModelValidForExport();
+             if (result != MODEL_EXPORT_ERROR.NO_ERROR) {
+               eh.handleModelNotValidForExport(result);
+             }
+             else {
+               sm.saveXML(lm.lastModelLoaded);
+             }
            } else { //SAVE AS
              uf.selectOutput("Choose a xml file", 8);
            }
@@ -655,7 +673,12 @@ public boolean action(Event me, Object arg) {
   public void exit(){
      //saveConfig(DirData+"Config.xml"); 
      if(!lm.lastModelLoaded.equals("") && eh.confirm("Do you want to save you project?")){
-        sm.saveXML(lm.lastModelLoaded);
+       MODEL_EXPORT_ERROR result = isModelValidForExport();
+       if (result != MODEL_EXPORT_ERROR.NO_ERROR) {
+         eh.handleModelNotValidForExport(result);
+         return;
+       }
+       sm.saveXML(lm.lastModelLoaded);
      }
     // println(" exit");
     super.exit();
@@ -669,5 +692,21 @@ public boolean action(Event me, Object arg) {
   
   public MenuManager getMenuManager() {
 	  return mm;
+  }
+
+  /*
+   * Answers if the current model is in a state valid
+   * for exporting to XML.
+   *
+   * Implemented checks:
+   * - Domain definition completeness
+   */
+  public MODEL_EXPORT_ERROR isModelValidForExport() {
+    // Check that all domain definitions are complete
+    if (dm.getIncompleteDomains().size() > 0) {
+      return MODEL_EXPORT_ERROR.INCOMPLETE_DOMAINS;
+    }
+
+    return MODEL_EXPORT_ERROR.NO_ERROR;
   }
 }

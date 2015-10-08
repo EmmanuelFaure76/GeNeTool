@@ -21,6 +21,7 @@
 package grnboolmodel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 //
@@ -175,8 +176,23 @@ public class Domain{
       p.text(this.Name,x,y); 
       p.textFont(p.cm.myFont, 12); 
   }
-   
 
- 
- 
+  /*
+   * Returns a list of indices of incomplete definitions.
+   */
+  List<Integer> getIncompleteDefinitionIndices() {
+    List<Integer> result = new ArrayList<Integer>();
+
+    if (DefObjets != null) {
+      for (int i = 0; i < DefObjets.length; i++) {
+        Objet[] objet = DefObjets[i];
+
+        // 0: Operator, 1: Domain
+        if (objet[0] == null || objet[1] == null) {
+          result.add(i);
+        }
+      }
+    }
+    return result;
+  }
 }

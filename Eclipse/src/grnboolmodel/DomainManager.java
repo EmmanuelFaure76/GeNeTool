@@ -21,8 +21,9 @@
 package grnboolmodel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-  /////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
   //
   // Domain.pde
   //
@@ -105,19 +106,6 @@ public class DomainManager {
     return null;
   }
 
-  /*
-  public boolean isDuplicateDomainName(String candidateName) {
-    for (int i = 0; i < Domains.size(); i++) {
-      Domain domain = (Domain) Domains.get(i);
-      if (domain.Name.equals(candidateName)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-  */
-
   public void delDomain(Domain dom){
     p.mm.addMessage("Delete domain " +dom.Name);
     if(dom==DomainDef) DomainDef=null;
@@ -134,4 +122,16 @@ public class DomainManager {
   public void computeData(){ for(int d=0;d<nbDomain;d++) getDomain(d).computeData();}
   public void reComputeData(Gene g){ for(int d=0;d<nbDomain;d++) getDomain(d).reComputeData(g);}
 
+  public List<Domain> getIncompleteDomains() {
+    ArrayList<Domain> result = new ArrayList<Domain>();
+
+    for (int i = 0; i < nbDomain; i++) {
+      Domain domain = (Domain)Domains.get(i);
+
+      if (domain.getIncompleteDefinitionIndices().size() > 0) {
+        result.add(domain);
+      }
+    }
+    return result;
+  }
 }
