@@ -619,12 +619,12 @@ public class RuleReader {
 
     Operator op = null;
     if (type.equals("CC")) {
-      op = opCC;
+      op = new Operator(opCC);
     } else if (type.equals("NCC_n")) {
-      op = opNCC_N;
+      op = new Operator(opNCC_N);
     }
     if (type.equals("NCC_d")) {
-      op = opNCC_D;
+      op = new Operator(opNCC_D);
     }
 
     op.hmin = min;
