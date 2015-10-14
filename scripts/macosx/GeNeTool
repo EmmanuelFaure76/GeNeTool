@@ -1,0 +1,9 @@
+#!/bin/sh
+
+APPDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+LIBDIR=$APPDIR/../Java
+
+CLASSPATH="$LIBDIR/GeNeTool.jar:$LIBDIR/core.jar:$LIBDIR/jogl-all.jar:$LIBDIR/gluegen-rt.jar:$LIBDIR/jogl-all-natives-macosx-universal.jar:$LIBDIR/gluegen-rt-natives-macosx-universal.jar:$LIBDIR/itext.jar:$LIBDIR/pdf.jar:$LIBDIR/gstreamer-java.jar:$LIBDIR/jna.jar:$LIBDIR/video.jar:$LIBDIR/AppleJavaExtensions.jar"
+
+java -Xms64m -Xmx2048m -Djna.nosys=true -Djava.library.path="$APPDIR:$LIBDIR" -cp $CLASSPATH GeNeTool "$@"
+
