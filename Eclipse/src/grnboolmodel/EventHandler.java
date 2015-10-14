@@ -131,7 +131,11 @@ public class EventHandler {
                             if(p.ObjetDrag.isDomain())  obj=new Objet(p, p.ObjetDrag.getDomain());
                             if(p.ObjetDrag.isOperator()){ Operator op=new Operator(p.ObjetDrag.getOperator()); if(op.comp==4 || op.comp==5 || op.comp==6) op.step=0; obj=new Objet(p, op);}
                             if(p.ObjetDrag.isString()) {  obj=new Objet(p, p.ObjetDrag.getString());  }
-                            GeneDef.addObjet(l,Position,obj);  //Gene Definition Add 
+
+                            // Any other object, such as a region, should not be draggable to a vector equation
+                            if (obj != null) {
+                              GeneDef.addObjet(l, Position, obj);  //Gene Definition Add
+                            }
                         
                           break;
                           case 1:   //Drag From Input Definition Box (Gene/Domains)
